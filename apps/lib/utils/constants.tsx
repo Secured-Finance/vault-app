@@ -6,11 +6,21 @@ import { IconYearn } from '@lib/icons/IconYearn'
 import { IconYearnXApps } from '@lib/icons/IconYearnXApps'
 import type { TAddress, TNDict, TToken } from '@lib/types'
 import type { TApp } from '@lib/types/mixed'
-import { arbitrum, base, fantom, mainnet, optimism, polygon, sonic } from 'viem/chains'
+import { arbitrum, mainnet } from 'viem/chains'
 import { toAddress } from './tools.address'
-import { katana } from './wagmi'
+import { filecoinCalibration } from './wagmi'
 
-export const SUPPORTED_NETWORKS = [mainnet, optimism, polygon, fantom, base, arbitrum, sonic, katana]
+export const SUPPORTED_NETWORKS = [
+  mainnet,
+  // optimism,
+  // polygon,
+  // fantom,
+  // base,
+  arbitrum,
+  // sonic,
+  // katana,
+  filecoinCalibration
+]
 
 export const MULTICALL3_ADDRESS = toAddress('0xcA11bde05977b3631167028862bE2a173976CA11')
 
@@ -139,7 +149,9 @@ export const YEARN_APPS: TApp[] = [
   {
     name: 'veYFI',
     description: 'Stake YFI to earn yield, boost gauges, and take part in governance.',
-    logoURI: `${import.meta.env.VITE_BASE_YEARN_ASSETS_URI}/tokens/1/0x41252E8691e964f7DE35156B68493bAb6797a275/logo-128.png`,
+    logoURI: `${
+      import.meta.env.VITE_BASE_YEARN_ASSETS_URI
+    }/tokens/1/0x41252E8691e964f7DE35156B68493bAb6797a275/logo-128.png`,
     appURI: 'https://veyfi.yearn.fi'
   },
   {
@@ -281,7 +293,9 @@ export const OLD_APPS: TApp[] = [
   {
     name: 'yPrisma',
     description: 'Put your yPRISMA to work.',
-    logoURI: `${import.meta.env.VITE_BASE_YEARN_ASSETS_URI}/tokens/1/0xe3668873d944e4a949da05fc8bde419eff543882/logo-128.png`,
+    logoURI: `${
+      import.meta.env.VITE_BASE_YEARN_ASSETS_URI
+    }/tokens/1/0xe3668873d944e4a949da05fc8bde419eff543882/logo-128.png`,
     appURI: 'https://yprisma.yearn.fi'
   }
 ]

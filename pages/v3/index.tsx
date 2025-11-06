@@ -142,7 +142,7 @@ function ListOfVaults(): ReactElement {
     onChangeSortBy,
     onReset
   } = useQueryArguments({
-    defaultTypes: [ALL_VAULTSV3_KINDS_KEYS[0]],
+    defaultTypes: ALL_VAULTSV3_KINDS_KEYS,
     defaultCategories: ALL_VAULTSV3_CATEGORIES_KEYS,
     defaultPathname: '/v3'
   })
@@ -209,8 +209,14 @@ function ListOfVaults(): ReactElement {
     // Add migratable vaults to holdings (guaranteed to have balance)
     for (const vault of migratableVaults) {
       const key = `${vault.chainID}_${vault.address}`
-      const balance = getBalance({ address: vault.address, chainID: vault.chainID })
-      const stakingBalance = getBalance({ address: vault.staking.address, chainID: vault.chainID })
+      const balance = getBalance({
+        address: vault.address,
+        chainID: vault.chainID
+      })
+      const stakingBalance = getBalance({
+        address: vault.staking.address,
+        chainID: vault.chainID
+      })
       const hasBalance = balance.raw > 0n
       const hasStakingBalance = stakingBalance.raw > 0n
       if (hasBalance || hasStakingBalance) {
@@ -243,9 +249,18 @@ function ListOfVaults(): ReactElement {
         continue
       }
 
-      const balance = getBalance({ address: vault.address, chainID: vault.chainID })
-      const stakingBalance = getBalance({ address: vault.staking.address, chainID: vault.chainID })
-      const price = getPrice({ address: vault.address, chainID: vault.chainID })
+      const balance = getBalance({
+        address: vault.address,
+        chainID: vault.chainID
+      })
+      const stakingBalance = getBalance({
+        address: vault.staking.address,
+        chainID: vault.chainID
+      })
+      const price = getPrice({
+        address: vault.address,
+        chainID: vault.chainID
+      })
 
       const holdingsValue =
         toNormalizedBN(balance.raw + stakingBalance.raw, vault.decimals).normalized * price.normalized
@@ -376,18 +391,48 @@ function ListOfVaults(): ReactElement {
             onChangeSortDirection(newSortDirection as TSortDirection)
           }}
           items={[
-            { label: 'Vault', value: 'name', sortable: true, className: 'col-span-4' },
-            { label: 'Est. APY', value: 'estAPY', sortable: true, className: 'col-span-2' },
-            { label: 'Hist. APY', value: 'APY', sortable: true, className: 'col-span-2' },
+            {
+              label: 'Vault',
+              value: 'name',
+              sortable: true,
+              className: 'col-span-4'
+            },
+            {
+              label: 'Est. APY',
+              value: 'estAPY',
+              sortable: true,
+              className: 'col-span-2'
+            },
+            {
+              label: 'Hist. APY',
+              value: 'APY',
+              sortable: true,
+              className: 'col-span-2'
+            },
             {
               label: 'Risk Level',
               value: 'score',
               sortable: true,
               className: 'col-span-2 whitespace-nowrap'
             },
-            { label: 'Available', value: 'available', sortable: true, className: 'col-span-2' },
-            { label: 'Holdings', value: 'deposited', sortable: true, className: 'col-span-2' },
-            { label: 'Deposits', value: 'tvl', sortable: true, className: 'col-span-2 justify-end' }
+            {
+              label: 'Available',
+              value: 'available',
+              sortable: true,
+              className: 'col-span-2'
+            },
+            {
+              label: 'Holdings',
+              value: 'deposited',
+              sortable: true,
+              className: 'col-span-2'
+            },
+            {
+              label: 'Deposits',
+              value: 'tvl',
+              sortable: true,
+              className: 'col-span-2 justify-end'
+            }
           ]}
         />
         <div className={'grid gap-3'}>{renderVaultList()}</div>

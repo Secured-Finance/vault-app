@@ -65,6 +65,32 @@ export const katana = defineChain({
   testnet: false
 })
 
+export const filecoinCalibration = defineChain({
+  id: 314159,
+  name: 'Filecoin Calibration',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'testnet filecoin',
+    symbol: 'tFIL'
+  },
+  rpcUrls: {
+    default: { http: ['https://api.calibration.node.glif.io/rpc/v1'] }
+  },
+  blockExplorers: {
+    default: {
+      name: 'Filecoin Calibration Explorer',
+      url: 'https://calibration.filfox.info'
+    }
+  },
+  contracts: {
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      blockCreated: 0
+    }
+  },
+  testnet: true
+})
+
 /***************************************************************************************************
  ** Extended Chain type is used to add additional properties to the basic wagmi Chain type.
  ** Ee need to add:
@@ -131,7 +157,7 @@ function getInfuraBaseURL(chainID: number): string {
 
 function initIndexedWagmiChains(): TNDict<TExtendedChain> {
   const _indexedWagmiChains: TNDict<TExtendedChain> = {}
-  for (const chain of Object.values({ ...wagmiChains, rari, katana })) {
+  for (const chain of Object.values({ ...wagmiChains, rari, katana, filecoinCalibration })) {
     if (isChain(chain)) {
       let extendedChain = chain as unknown as TExtendedChain
       if (extendedChain.id === 1337) {
