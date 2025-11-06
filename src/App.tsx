@@ -96,13 +96,7 @@ function App(): ReactElement {
       <WithFonts>
         <main className={'font-aeonik size-full min-h-screen'}>
           <PlausibleProvider domain={'yearn.fi'} enabled={true}>
-            <WithMom
-              supportedChains={SUPPORTED_NETWORKS}
-              tokenLists={[
-                'https://cdn.jsdelivr.net/gh/yearn/tokenLists@main/lists/yearn.json',
-                'https://cdn.jsdelivr.net/gh/yearn/tokenLists@main/lists/popular.json'
-              ]}
-            >
+            <WithMom supportedChains={SUPPORTED_NETWORKS} tokenLists={[]}>
               <AppSettingsContextApp>
                 <YearnContextApp>
                   <WalletContextApp>

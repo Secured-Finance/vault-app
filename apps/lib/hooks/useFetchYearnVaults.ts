@@ -38,7 +38,7 @@ function useFetchYearnVaults(chainIDs?: number[] | undefined): {
       strategiesDetails: 'withDetails',
       strategiesCondition: 'inQueue',
 
-      chainIDs: chainIDs ? chainIDs.join(',') : [1, 10, 137, 146, 250, 8453, 42161, 747474].join(','),
+      chainIDs: chainIDs ? chainIDs.join(',') : [1, 42161, 314159].join(','),
       limit: '2500'
     })}`,
     schema: yDaemonVaultsSchema,
@@ -50,7 +50,7 @@ function useFetchYearnVaults(chainIDs?: number[] | undefined): {
   // const vaultsMigrations: TYDaemonVaults = useMemo(() => [], []);
   const { data: vaultsMigrations } = useFetch<TYDaemonVaults>({
     endpoint: `${yDaemonBaseUriWithoutChain}/vaults?${new URLSearchParams({
-      chainIDs: chainIDs ? chainIDs.join(',') : [1, 10, 137, 146, 250, 8453, 42161, 747474].join(','),
+      chainIDs: chainIDs ? chainIDs.join(',') : [1, 42161, 314159].join(','),
       migratable: 'nodust',
       limit: '2500'
     })}`,
@@ -115,7 +115,9 @@ function useFetchYearnVaults(chainIDs?: number[] | undefined): {
           ? {
               ...yBoldVault.apr,
               netAPR: stYBoldVault.apr.netAPR ?? yBoldVault.apr.netAPR ?? 0,
-              points: { ...(stYBoldVault.apr.points ?? yBoldVault.apr.points ?? {}) },
+              points: {
+                ...(stYBoldVault.apr.points ?? yBoldVault.apr.points ?? {})
+              },
               pricePerShare: {
                 ...(stYBoldVault.apr.pricePerShare ?? yBoldVault.apr.pricePerShare ?? {})
               },
