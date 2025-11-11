@@ -10,7 +10,9 @@ const ChainColors: { [key: number]: string } = {
   8453: '#1C55F5',
   42161: '#2F3749',
   747474: '#f6ff0d',
-  146: '#ffffff'
+  146: '#ffffff',
+  314: '#0090FF',
+  314159: '#0090FF'
 }
 
 const ChainTextColors: { [key: number]: string } = {
@@ -26,7 +28,9 @@ const ChainNames: { [key: number]: string } = {
   8453: 'Base',
   42161: 'Arbitrum',
   747474: 'Katana',
-  146: 'Sonic'
+  146: 'Sonic',
+  314: 'Filecoin',
+  314159: 'Filecoin Calibration'
 }
 
 export const VaultChainTag: FC<{
