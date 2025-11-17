@@ -55,7 +55,7 @@ export function VaultsV3ListRow({
         className={cl(
           'absolute inset-0 rounded-3xl',
           'opacity-20 transition-opacity group-hover:opacity-100 pointer-events-none',
-          'bg-[linear-gradient(80deg,#2C3DA6,#D21162)]'
+          'bg-[linear-gradient(80deg,#5162FF,#ADB6FF)]'
         )}
       />
 
@@ -64,7 +64,9 @@ export function VaultsV3ListRow({
           <div className={'mt-2.5 size-8 min-h-8 min-w-8 rounded-full md:flex'}>
             {/* TODO:add env for asset address */}
             <ImageWithFallback
-              src={`${import.meta.env.VITE_BASE_YEARN_ASSETS_URI}/tokens/${currentVault.chainID}/${currentVault.token.address.toLowerCase()}/logo-32.png`}
+              src={`${import.meta.env.VITE_BASE_YEARN_ASSETS_URI}/tokens/${
+                currentVault.chainID
+              }/${currentVault.token.address.toLowerCase()}/logo-32.png`}
               alt={''}
               width={32}
               height={32}
@@ -105,7 +107,9 @@ export function VaultsV3ListRow({
         <div className={'yearn--table-data-section-item col-span-2 flex-row md:flex-col'} datatype={'number'}>
           <p className={'inline text-start text-xs text-neutral-800/60 md:hidden'}>{'Available'}</p>
           <p
-            className={`yearn--table-data-section-item-value ${isZero(availableToDeposit) ? 'text-neutral-400' : 'text-neutral-900'}`}
+            className={`yearn--table-data-section-item-value ${
+              isZero(availableToDeposit) ? 'text-neutral-400' : 'text-neutral-900'
+            }`}
           >
             <RenderAmount
               value={Number(toNormalizedBN(availableToDeposit, currentVault.token.decimals).normalized)}

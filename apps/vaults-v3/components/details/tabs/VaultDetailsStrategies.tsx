@@ -29,7 +29,7 @@ function UnallocatedStrategy({
         className={cl(
           'absolute inset-0 rounded-2xl',
           'opacity-20 transition-opacity  pointer-events-none',
-          'bg-[linear-gradient(80deg,#2C3DA6,#D21162)]'
+          'bg-[linear-gradient(80deg,#5162FF,#ADB6FF)]'
         )}
       />
 
@@ -202,7 +202,12 @@ export function VaultDetailsStrategies({ currentVault }: { currentVault: TYDaemo
                 onChangeSortDirection(newSortDirection as TSortDirection)
               }}
               items={[
-                { label: 'Vault', value: 'name', sortable: false, className: 'ml-20' },
+                {
+                  label: 'Vault',
+                  value: 'name',
+                  sortable: false,
+                  className: 'ml-20'
+                },
                 {
                   label: 'Allocation %',
                   value: 'allocationPercentage',

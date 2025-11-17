@@ -110,7 +110,7 @@ export function VaultsListStrategy({
             'absolute inset-0 rounded-2xl',
             'opacity-20 transition-opacity  pointer-events-none',
 
-            isExpanded ? 'bg-[#474592]' : 'bg-[linear-gradient(80deg,#2C3DA6,#D21162)] group-hover:opacity-100'
+            isExpanded ? 'bg-[#474592]' : 'bg-[linear-gradient(80deg,#5162FF,#ADB6FF)] group-hover:opacity-100'
           )}
         />
       )}
@@ -136,7 +136,9 @@ export function VaultsListStrategy({
           </div>
           <div className={'rounded-full'}>
             <ImageWithFallback
-              src={`${import.meta.env.VITE_BASE_YEARN_ASSETS_URI}/tokens/${chainId}/${tokenAddress.toLowerCase()}/logo-32.png`}
+              src={`${
+                import.meta.env.VITE_BASE_YEARN_ASSETS_URI
+              }/tokens/${chainId}/${tokenAddress.toLowerCase()}/logo-32.png`}
               alt={''}
               width={24}
               height={24}

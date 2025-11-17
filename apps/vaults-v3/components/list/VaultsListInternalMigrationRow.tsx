@@ -18,14 +18,16 @@ export function VaultsListInternalMigrationRow({ currentVault }: { currentVault:
         className={cl(
           'absolute inset-0 rounded-3xl',
           'opacity-20 pointer-events-none',
-          'bg-[linear-gradient(80deg,#2C3DA6,#D21162)]'
+          'bg-[linear-gradient(80deg,#5162FF,#ADB6FF)]'
         )}
       />
       <div className={cl('col-span-3 z-10', 'flex flex-row items-center justify-between')}>
         <div className={'flex flex-row space-x-6'}>
           <div className={'mt-2.5 size-8 rounded-full md:flex'}>
             <ImageWithFallback
-              src={`${import.meta.env.VITE_BASE_YEARN_ASSETS_URI}/tokens/${currentVault.chainID}/${currentVault.token.address.toLowerCase()}/logo-32.png`}
+              src={`${import.meta.env.VITE_BASE_YEARN_ASSETS_URI}/tokens/${
+                currentVault.chainID
+              }/${currentVault.token.address.toLowerCase()}/logo-32.png`}
               alt={''}
               width={32}
               height={32}
@@ -54,7 +56,7 @@ export function VaultsListInternalMigrationRow({ currentVault }: { currentVault:
                 className={cl(
                   'absolute inset-0',
                   'opacity-80 transition-opacity group-hover:opacity-100 pointer-events-none',
-                  'bg-[linear-gradient(80deg,#D21162,#2C3DA6)]'
+                  'bg-[linear-gradient(80deg,#ADB6FF,#5162FF)]'
                 )}
               />
               <p className={'z-10 mx-auto whitespace-nowrap text-neutral-900'}>

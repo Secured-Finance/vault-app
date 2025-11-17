@@ -13,13 +13,13 @@ import { Filters } from '@vaults-v3/components/Filters'
 import { VaultsV3ListHead } from '@vaults-v3/components/list/VaultsV3ListHead'
 import { VaultsV3ListRow } from '@vaults-v3/components/list/VaultsV3ListRow'
 import { ALL_VAULTSV3_CATEGORIES_KEYS, ALL_VAULTSV3_KINDS_KEYS } from '@vaults-v3/constants'
-import { V3Mask } from '@vaults-v3/Mark'
+// import { V3Mask } from '@vaults-v3/Mark'
 import type { ReactElement, ReactNode } from 'react'
 import { Children, Fragment, useMemo, useState } from 'react'
 
 function Background(): ReactElement {
   return (
-    <div className={cl('absolute inset-0', 'pointer-events-none', 'bg-gradient-to-r from-[#D21162] to-[#2C3DA6]')} />
+    <div className={cl('absolute inset-0', 'pointer-events-none', 'bg-gradient-to-r from-[#ADB6FF] to-[#5162FF]')} />
   )
 }
 function BrandNewVaultCard(): ReactElement {
@@ -28,7 +28,7 @@ function BrandNewVaultCard(): ReactElement {
       className={cl(
         'h-full rounded-3xl relative overflow-hidden',
         'pr-2 pl-4 pb-4 pt-6 md:p-10',
-        'col-span-75 md:col-span-46'
+        'col-span-100 md:col-span-100'
       )}
     >
       <div className={'relative z-10'}>
@@ -41,28 +41,30 @@ function BrandNewVaultCard(): ReactElement {
         >
           {'A brave new\nworld for Yield'}
         </h1>
-        <p className={'mb-4 whitespace-break-spaces text-base text-[#F2B7D0] md:text-lg'}>
-          {'Yearn v3 is a new yield paradigm offering better automation,\ncomposability and flexibility. Enjoy!'}
+        <p className={'mb-4 whitespace-break-spaces text-base text-neutral-900 md:text-lg'}>
+          {
+            'Secured Finance VAULT is a new yield paradigm offering better automation, composability and flexibility. Enjoy!'
+          }
         </p>
       </div>
       <Background />
     </div>
   )
 }
-function V3Card(): ReactElement {
-  return (
-    <div className={'col-span-75 mb-4 mr-0 hidden md:col-span-29 md:mb-0 md:mr-6 md:block'}>
-      <div
-        className={cl(
-          'flex h-full w-full flex-col items-center justify-center',
-          'gap-y-0 rounded-3xl bg-neutral-200 md:gap-y-6 p-2'
-        )}
-      >
-        <V3Mask className={'size-[90%]'} />
-      </div>
-    </div>
-  )
-}
+// function V3Card(): ReactElement {
+//   return (
+//     <div className={'col-span-75 mb-4 mr-0 hidden md:col-span-29 md:mb-0 md:mr-6 md:block'}>
+//       <div
+//         className={cl(
+//           'flex h-full w-full flex-col items-center justify-center',
+//           'gap-y-0 rounded-3xl bg-neutral-200 md:gap-y-6 p-2'
+//         )}
+//       >
+//         <V3Mask className={'size-[90%]'} />
+//       </div>
+//     </div>
+//   )
+// }
 
 function PortfolioCard(): ReactElement {
   const { cumulatedValueInV3Vaults, isLoading } = useWallet()
@@ -93,7 +95,7 @@ function PortfolioCard(): ReactElement {
                 className={cl(
                   'absolute inset-0',
                   'opacity-80 transition-opacity group-hover:opacity-100 pointer-events-none',
-                  'bg-[linear-gradient(80deg,#D21162,#2C3DA6)]'
+                  'bg-[linear-gradient(80deg,#ADB6FF,#5162FF)]'
                 )}
               />
               <p className={'z-10 text-neutral-900'}>{'Connect Wallet'}</p>
@@ -453,7 +455,7 @@ function Index(): ReactElement {
       <div className={'relative mx-auto w-full max-w-[1232px]'}>
         <div className={'absolute inset-x-0 top-0 w-full px-4 pt-6 md:pt-16'}>
           <div className={'grid grid-cols-75'}>
-            <V3Card />
+            {/* <V3Card /> */}
             <BrandNewVaultCard />
           </div>
         </div>
@@ -480,7 +482,7 @@ function Index(): ReactElement {
                 viewBox={'0 0 113 32'}
                 fill={'none'}
               >
-                <path d={'M0 32C37.9861 32 20.9837 0 56 0C91.0057 0 74.388 32 113 32H0Z'} fill={'#000520'} />
+                <path d={'M0 32C37.9861 32 20.9837 0 56 0C91.0057 0 74.388 32 113 32H0Z'} fill={'#00202e'} />
               </svg>
               <div
                 className={`absolute mt-2 flex justify-center transition-transform ${isCollapsed ? '' : '-rotate-180'}`}

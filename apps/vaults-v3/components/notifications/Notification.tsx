@@ -111,8 +111,12 @@ function NotificationContent({
           <ImageWithFallback
             alt={notification.fromTokenName || 'Token'}
             unoptimized
-            src={`${import.meta.env.VITE_BASE_YEARN_ASSETS_URI}/tokens/${notification.chainId}/${notification.fromAddress ? notification.fromAddress.toLowerCase() : '0x0'}/logo-32.png`}
-            altSrc={`${import.meta.env.VITE_BASE_YEARN_ASSETS_URI}/tokens/${notification.chainId}/${notification.fromAddress ? notification.fromAddress.toLowerCase() : '0x0'}/logo-32.png`}
+            src={`${import.meta.env.VITE_BASE_YEARN_ASSETS_URI}/tokens/${notification.chainId}/${
+              notification.fromAddress ? notification.fromAddress.toLowerCase() : '0x0'
+            }/logo-32.png`}
+            altSrc={`${import.meta.env.VITE_BASE_YEARN_ASSETS_URI}/tokens/${notification.chainId}/${
+              notification.fromAddress ? notification.fromAddress.toLowerCase() : '0x0'
+            }/logo-32.png`}
             quality={90}
             width={32}
             height={32}
@@ -134,8 +138,12 @@ function NotificationContent({
             <ImageWithFallback
               alt={notification.toTokenName || 'Token'}
               unoptimized
-              src={`${import.meta.env.VITE_BASE_YEARN_ASSETS_URI}/tokens/${notification.chainId}/${notification.toAddress}/logo-128.png`}
-              altSrc={`${import.meta.env.VITE_BASE_YEARN_ASSETS_URI}/tokens/${notification.chainId}/${notification.toAddress}/logo-128.png`}
+              src={`${import.meta.env.VITE_BASE_YEARN_ASSETS_URI}/tokens/${
+                notification.chainId
+              }/${notification.toAddress}/logo-128.png`}
+              altSrc={`${import.meta.env.VITE_BASE_YEARN_ASSETS_URI}/tokens/${
+                notification.chainId
+              }/${notification.toAddress}/logo-128.png`}
               quality={90}
               width={32}
               height={32}
@@ -342,7 +350,7 @@ export const Notification = memo(function Notification({
           className={cl(
             'absolute inset-0 rounded-xl',
             'opacity-20 transition-opacity  pointer-events-none',
-            'bg-[linear-gradient(80deg,#2C3DA6,#D21162)] group-hover:opacity-100'
+            'bg-[linear-gradient(80deg,#5162FF,#ADB6FF)] group-hover:opacity-100'
           )}
         />
       )}

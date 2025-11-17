@@ -10,12 +10,16 @@ import type { ReactElement } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 import { useLocation } from 'react-router'
 import type { Chain } from 'viem'
+import Image from '/src/components/Image'
 import Link from '/src/components/Link'
 import { APPS, AppName } from './Apps'
-import { LaunchModal } from './LaunchModal'
 import { ModalMobileMenu } from './ModalMobileMenu'
 
-export type TMenu = { path: string; label: string | ReactElement; target?: string }
+export type TMenu = {
+  path: string
+  label: string | ReactElement
+  target?: string
+}
 type TNavbar = { nav: TMenu[]; currentPathName: string }
 
 function Navbar({ nav, currentPathName }: TNavbar): ReactElement {
@@ -151,7 +155,7 @@ function AppHeader(props: { supportedNetworks: Chain[] }): ReactElement {
         <header className={'yearn--header mx-auto max-w-[1232px] px-0!'}>
           <div className={'direction-row flex items-center justify-start gap-x-6 px-1 py-2 md:py-1'}>
             <div className={'flex justify-center'}>
-              <LaunchModal />
+              <Image width={32} height={32} alt={'chain'} src={'/sf-logo.svg'} />
             </div>
             <Navbar currentPathName={pathname || ''} nav={menu} />
           </div>

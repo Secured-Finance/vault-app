@@ -22,7 +22,9 @@ function Index(): ReactElement | null {
   const { address, isActive } = useWeb3()
   const params = useParams()
   const { onRefresh } = useWallet()
-  const { yDaemonBaseUri } = useYDaemonBaseURI({ chainID: Number(params.chainID) })
+  const { yDaemonBaseUri } = useYDaemonBaseURI({
+    chainID: Number(params.chainID)
+  })
 
   // Use vault address as key to reset state
   const vaultKey = `${params.chainID}-${params.address}`
@@ -105,10 +107,16 @@ function Index(): ReactElement | null {
     if (address && isActive) {
       const tokensToRefresh: TUseBalancesTokens[] = []
       if (currentVault?.address) {
-        tokensToRefresh.push({ address: currentVault.address, chainID: currentVault.chainID })
+        tokensToRefresh.push({
+          address: currentVault.address,
+          chainID: currentVault.chainID
+        })
       }
       if (currentVault?.token?.address) {
-        tokensToRefresh.push({ address: currentVault.token.address, chainID: currentVault.chainID })
+        tokensToRefresh.push({
+          address: currentVault.token.address,
+          chainID: currentVault.chainID
+        })
       }
       if (currentVault?.staking.available) {
         tokensToRefresh.push({
@@ -165,7 +173,7 @@ function Index(): ReactElement | null {
         className={cl(
           'h-full rounded-3xl',
           'pt-6 pb-6 md:pb-10 px-4 md:px-8',
-          'bg-[linear-gradient(73deg,#D21162_24.91%,#2C3DA6_99.66%)]',
+          'bg-[linear-gradient(73deg,#ADB6FF_24.91%,#5162FF_99.66%)]',
           'relative flex flex-col items-center justify-center'
         )}
       >
@@ -188,7 +196,9 @@ function Index(): ReactElement | null {
           >
             <ImageWithFallback
               className={'size-10 md:size-12'}
-              src={`${import.meta.env.VITE_BASE_YEARN_ASSETS_URI}/tokens/${currentVault.chainID}/${currentVault.token.address.toLowerCase()}/logo-128.png`}
+              src={`${import.meta.env.VITE_BASE_YEARN_ASSETS_URI}/tokens/${
+                currentVault.chainID
+              }/${currentVault.token.address.toLowerCase()}/logo-128.png`}
               alt={''}
               width={48}
               height={48}
