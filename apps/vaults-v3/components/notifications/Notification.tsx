@@ -77,7 +77,7 @@ function NotificationContent({
 
     const isV3 = fromVault.version.startsWith('3') || fromVault.version.startsWith('~3')
     const href = isV3
-      ? `/v3/${fromVault.chainID}/${toAddress(fromVault.address)}`
+      ? `/${fromVault.chainID}/${toAddress(fromVault.address)}`
       : `/vaults/${fromVault.chainID}/${toAddress(fromVault.address)}`
 
     return href
@@ -98,7 +98,7 @@ function NotificationContent({
     }
     const isV3 = toVault.version.startsWith('3') || toVault.version.startsWith('~3')
     const href = isV3
-      ? `/v3/${toVault.chainID}/${toAddress(toVault.address)}`
+      ? `/${toVault.chainID}/${toAddress(toVault.address)}`
       : `/vaults/${toVault.chainID}/${toAddress(toVault.address)}`
 
     return href

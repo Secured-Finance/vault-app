@@ -21,7 +21,6 @@ import { useActionFlow } from '@vaults-v2/contexts/useActionFlow'
 import type { TStakingInfo } from '@vaults-v2/hooks/useVaultStakingData'
 import type { ChangeEvent, ReactElement } from 'react'
 import { useCallback, useMemo } from 'react'
-import { useLocation } from 'react-router'
 
 function AmountWithOptionalTooltip(props: {
   canOnlyWithdrawSome: boolean
@@ -66,7 +65,12 @@ function AmountWithOptionalTooltip(props: {
               }
             >
               <p className={'whitespace-pre text-wrap text-left text-neutral-400 md:text-xs'}>
-                {`This Vault is not always totally liquid (don't worry anon, funds are Safu).\n\nYou can currently withdraw up to ${formatAmount(props.maxPossibleToWithdraw.normalized, 6)} ${props.tokenSymbol}.\n\nLike the best things in life, liquidity comes and goes so feel free to check back later.`}
+                {`This Vault is not always totally liquid (don't worry anon, funds are Safu).\n\nYou can currently withdraw up to ${formatAmount(
+                  props.maxPossibleToWithdraw.normalized,
+                  6
+                )} ${
+                  props.tokenSymbol
+                }.\n\nLike the best things in life, liquidity comes and goes so feel free to check back later.`}
               </p>
             </div>
           </span>
@@ -93,9 +97,7 @@ export function VaultDetailsQuickActionsFrom(props: {
   const { address, isActive } = useWeb3()
   const { getToken, getBalance } = useWallet()
   const { getPrice } = useYearn()
-  const location = useLocation()
 
-  const isV3Page = location.pathname.startsWith('/v3')
   const {
     possibleOptionsFrom,
     actionParams,
@@ -143,10 +145,8 @@ export function VaultDetailsQuickActionsFrom(props: {
   function renderMultipleOptionsFallback(): ReactElement {
     return (
       <Dropdown
-        className={isV3Page ? 'w-full rounded-lg bg-neutral-300 md:w-fit!' : 'rounded-lg'}
-        comboboxOptionsClassName={
-          isV3Page ? 'bg-neutral-300 w-full rounded-lg scrollbar-none' : 'rounded-lg scrollbar-none'
-        }
+        className="w-full rounded-lg bg-neutral-300 md:w-fit!"
+        comboboxOptionsClassName="bg-neutral-300 w-full rounded-lg scrollbar-none"
         defaultOption={possibleOptionsFrom[0]}
         options={possibleOptionsFrom}
         selected={actionParams?.selectedOptionFrom}
@@ -188,9 +188,9 @@ export function VaultDetailsQuickActionsFrom(props: {
         <div className={'flex flex-col items-baseline justify-between pb-2 pl-1 md:flex-row'}>
           <p className={'text-base text-neutral-600'}>{isDepositing ? 'From wallet' : 'From vault'}</p>
           <legend className={'font-number inline text-xs text-neutral-900/50 md:hidden'} suppressHydrationWarning>
-            {`You have ${formatAmount((userBalance || zeroNormalizedBN).normalized)} ${
-              actionParams?.selectedOptionFrom?.symbol || 'tokens'
-            }`}
+            {`You have ${formatAmount(
+              (userBalance || zeroNormalizedBN).normalized
+            )} ${actionParams?.selectedOptionFrom?.symbol || 'tokens'}`}
           </legend>
         </div>
         <Renderable shouldRender={!hasMultipleInputsToChooseFrom} fallback={renderMultipleOptionsFallback()}>
@@ -212,13 +212,15 @@ export function VaultDetailsQuickActionsFrom(props: {
           <legend className={'hidden text-xs text-neutral-900/50 md:inline'} suppressHydrationWarning>
             <div>
               <p className={'font-number'}>
-                {`You have ${formatAmount((userBalance || zeroNormalizedBN).normalized)} ${
-                  actionParams?.selectedOptionFrom?.symbol || 'tokens'
-                }`}
+                {`You have ${formatAmount(
+                  (userBalance || zeroNormalizedBN).normalized
+                )} ${actionParams?.selectedOptionFrom?.symbol || 'tokens'}`}
               </p>
               {props.vaultData?.stakedBalanceOf.raw > 0n && (
                 <p className={'font-number'}>
-                  {`(+${formatAmount(props.vaultData.stakedBalanceOf.normalized, 6)} ${actionParams?.selectedOptionFrom?.symbol} staked earning ${formatPercent(currentStakedAPR * 100, 2, 2, 500)} APR)`}
+                  {`(+${formatAmount(props.vaultData.stakedBalanceOf.normalized, 6)} ${
+                    actionParams?.selectedOptionFrom?.symbol
+                  } staked earning ${formatPercent(currentStakedAPR * 100, 2, 2, 500)} APR)`}
                 </p>
               )}
             </div>
@@ -233,9 +235,7 @@ export function VaultDetailsQuickActionsFrom(props: {
             tokenSymbol={actionParams?.selectedOptionFrom?.symbol || 'tokens'}
           />
         </div>
-        <div
-          className={cl('flex h-10 items-center rounded-lg p-2 w-full', isV3Page ? 'bg-neutral-300' : 'bg-neutral-0')}
-        >
+        <div className={cl('flex h-10 items-center rounded-lg p-2 w-full bg-neutral-300')}>
           <div className={'flex h-10 w-full flex-row items-center justify-between px-0 py-4'}>
             <input
               id={'fromAmount'}

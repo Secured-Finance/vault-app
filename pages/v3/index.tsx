@@ -43,7 +43,7 @@ function BrandNewVaultCard(): ReactElement {
         </h1>
         <p className={'mb-4 whitespace-break-spaces text-base text-neutral-900 md:text-lg'}>
           {
-            'Secured Finance VAULT is a new yield paradigm offering better automation, composability and flexibility. Enjoy!'
+            'Secured Finance Vaults is a new yield paradigm offering better automation, composability and flexibility. Enjoy!'
           }
         </p>
       </div>
@@ -146,7 +146,7 @@ function ListOfVaults(): ReactElement {
   } = useQueryArguments({
     defaultTypes: ALL_VAULTSV3_KINDS_KEYS,
     defaultCategories: ALL_VAULTSV3_CATEGORIES_KEYS,
-    defaultPathname: '/v3'
+    defaultPathname: '/'
   })
   const { activeVaults, retiredVaults, migratableVaults } = useVaultFilter(types, chains, true)
 

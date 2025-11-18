@@ -24,7 +24,7 @@ function About(): ReactElement {
               "We can't offer you a phone number with ambient jazz hold music to listen to - but please feel free to hop into our "
             }
             <a
-              href={'https://discord.com/invite/6PNv2nF'}
+              href={'https://discord.com/invite/3kytCrv3qY'}
               target={'_blank'}
               className={'text-neutral-900 underline'}
               rel={'noreferrer'}

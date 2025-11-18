@@ -89,7 +89,7 @@ function CombinedVaultsTable(): ReactElement {
     defaultTypes: [ALL_VAULTSV3_KINDS_KEYS[0]],
     defaultCategories: ALL_VAULTSV3_CATEGORIES_KEYS,
     defaultSortBy: 'tvl',
-    defaultPathname: '/v3'
+    defaultPathname: '/'
   })
 
   const search = searchV3 ?? ''
@@ -154,7 +154,9 @@ function CombinedVaultsTable(): ReactElement {
         ? 'desc'
         : sortDirection
   const sortedVaults = useSortVaults(
-    filteredVaults as (TYDaemonVault & { details?: TYDaemonVaultStrategy['details'] })[],
+    filteredVaults as (TYDaemonVault & {
+      details?: TYDaemonVaultStrategy['details']
+    })[],
     actualSortBy,
     actualSortDirection
   )
@@ -193,7 +195,9 @@ function CombinedVaultsTable(): ReactElement {
                 <button
                   key={filter}
                   onClick={() => handleFilterClick(filter)}
-                  className={`h-full rounded-full ${activeFilter === filter ? 'bg-white/10' : 'text-neutral-900/75'} mb-0 flex items-center justify-center px-3 py-2 text-[16px]`}
+                  className={`h-full rounded-full ${
+                    activeFilter === filter ? 'bg-white/10' : 'text-neutral-900/75'
+                  } mb-0 flex items-center justify-center px-3 py-2 text-[16px]`}
                 >
                   {filter}
                 </button>
@@ -247,16 +251,36 @@ function CombinedVaultsTable(): ReactElement {
               onChangeSortDirection(newSortDirection as TSortDirection)
             }}
             items={[
-              { label: 'Vault', value: 'name', sortable: true, className: 'col-span-6' },
-              { label: 'Est. APY', value: 'estAPY', sortable: true, className: 'col-span-3' },
+              {
+                label: 'Vault',
+                value: 'name',
+                sortable: true,
+                className: 'col-span-6'
+              },
+              {
+                label: 'Est. APY',
+                value: 'estAPY',
+                sortable: true,
+                className: 'col-span-3'
+              },
               {
                 label: 'Risk',
                 value: 'score',
                 sortable: true,
                 className: 'col-span-3 whitespace-nowrap'
               },
-              { label: 'Vault Type', value: 'vaultType', sortable: true, className: 'col-span-3' },
-              { label: 'TVL', value: 'tvl', sortable: true, className: 'col-span-3 justify-end' }
+              {
+                label: 'Vault Type',
+                value: 'vaultType',
+                sortable: true,
+                className: 'col-span-3'
+              },
+              {
+                label: 'TVL',
+                value: 'tvl',
+                sortable: true,
+                className: 'col-span-3 justify-end'
+              }
             ]}
           />
           <div className={'grid gap-1'}>{vaultList.allVaults}</div>
@@ -289,16 +313,36 @@ function CombinedVaultsTable(): ReactElement {
               onChangeSortDirection(newSortDirection as TSortDirection)
             }}
             items={[
-              { label: 'Vault', value: 'name', sortable: true, className: 'col-span-6' },
-              { label: 'Est. APY', value: 'estAPY', sortable: true, className: 'col-span-3' },
+              {
+                label: 'Vault',
+                value: 'name',
+                sortable: true,
+                className: 'col-span-6'
+              },
+              {
+                label: 'Est. APY',
+                value: 'estAPY',
+                sortable: true,
+                className: 'col-span-3'
+              },
               {
                 label: 'Risk',
                 value: 'score',
                 sortable: true,
                 className: 'col-span-3 whitespace-nowrap'
               },
-              { label: 'Vault Type', value: 'vaultType', sortable: true, className: 'col-span-3' },
-              { label: 'TVL', value: 'tvl', sortable: true, className: 'col-span-3 justify-end' }
+              {
+                label: 'Vault Type',
+                value: 'vaultType',
+                sortable: true,
+                className: 'col-span-3'
+              },
+              {
+                label: 'TVL',
+                value: 'tvl',
+                sortable: true,
+                className: 'col-span-3 justify-end'
+              }
             ]}
           />
           <div className={'grid gap-4 md:gap-1'}>

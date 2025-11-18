@@ -147,7 +147,6 @@ export function LaunchModal({ trigger }: LaunchModalProps = {}): ReactElement {
   const pushedHistory = useRef(false)
   const [activeGroupTitle, setActiveGroupTitle] = useState(APP_GROUPS[0]?.title ?? '')
   const pathname = location.pathname
-  const forceDark = useMemo(() => pathname.startsWith('/v3') || pathname === '/', [pathname])
 
   const currentHost = useMemo(() => {
     if (typeof window === 'undefined') {
@@ -309,7 +308,7 @@ export function LaunchModal({ trigger }: LaunchModalProps = {}): ReactElement {
   return (
     <>
       {trigger ? (
-        trigger({ open: handleOpen, isOpen, forceDark })
+        trigger({ open: handleOpen, isOpen, forceDark: true })
       ) : (
         <button
           type={'button'}
@@ -320,7 +319,7 @@ export function LaunchModal({ trigger }: LaunchModalProps = {}): ReactElement {
         >
           <span className={'sr-only'}>{'Open Yearn navigation'}</span>
           <TileIcon
-            forceDark={forceDark}
+            forceDark={true}
             icon={
               <>
                 <LogoYearn
@@ -367,9 +366,7 @@ export function LaunchModal({ trigger }: LaunchModalProps = {}): ReactElement {
                 className={cl(
                   'relative flex h-svh w-full transform flex-col overflow-hidden rounded-none py-6 focus:outline-none',
                   'sm:h-auto sm:max-h-[90vh] sm:w-full sm:max-w-6xl sm:rounded-3xl sm:border sm:p-8 sm:shadow-2xl',
-                  forceDark
-                    ? 'bg-[#050A29] text-white sm:border-primary/30'
-                    : 'bg-white text-neutral-900 dark:bg-neutral-0 dark:text-white sm:border-neutral-100 dark:border-primary/30'
+                  'bg-[#050A29] text-white sm:border-primary/30'
                 )}
               >
                 <div className={'flex w-full px-6 justify-between'}>
@@ -379,9 +376,7 @@ export function LaunchModal({ trigger }: LaunchModalProps = {}): ReactElement {
                     onClick={handleClose}
                     className={cl(
                       'flex size-6 items-center justify-center rounded-full border border-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
-                      forceDark
-                        ? 'bg-[#070A1C] text-neutral-700 hover:bg-[#1a2e5e]'
-                        : 'bg-neutral-0 border-1 border-neutral-500 text-neutral-700 hover:bg-neutral-200 dark:hover:text-neutral-700'
+                      'bg-[#070A1C] text-neutral-700 hover:bg-[#1a2e5e]'
                     )}
                   >
                     <span className={'sr-only'}>{'Close'}</span>
@@ -394,9 +389,7 @@ export function LaunchModal({ trigger }: LaunchModalProps = {}): ReactElement {
                   className={cl(
                     'mt-6 px-6 flex-1 overflow-y-auto',
                     'lg:min-h-[400px] lg:max-h-[70vh]',
-                    forceDark
-                      ? 'lg:rounded-3xl lg:border lg:border-[#1C264F] lg:bg-[#050A29]'
-                      : 'lg:rounded-3xl lg:border lg:border-neutral-200 lg:bg-white lg:dark:bg-neutral-0'
+                    'lg:rounded-3xl lg:border lg:border-[#1C264F] lg:bg-[#050A29]'
                   )}
                 >
                   <div className={'hidden h-full flex-col gap-6 p-0 lg:flex lg:flex-row lg:gap-6 lg:p-6'}>
@@ -413,12 +406,8 @@ export function LaunchModal({ trigger }: LaunchModalProps = {}): ReactElement {
                               'rounded-xl border px-4 py-3 text-left text-xs font-semibold uppercase tracking-[0.25em]',
                               'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
                               isActive
-                                ? forceDark
-                                  ? 'border-primary text-white shadow-[0_0_0_2px_rgba(62,132,255,0.2)]'
-                                  : 'border-primary text-neutral-900 font-bold dark:text-white shadow-[0_0_0_2px_rgba(62,132,255,0.2)]'
-                                : forceDark
-                                  ? 'border-primary/20 bg-transparent text-neutral-500 hover:bg-primary/10 hover:border-primary/70 hover:text-white'
-                                  : 'border-transparent bg-transparent text-neutral-500 hover:border-primary/70 dark:text-neutral-500 dark:hover:border-primary'
+                                ? 'border-primary text-white shadow-[0_0_0_2px_rgba(62,132,255,0.2)]'
+                                : 'border-primary/20 bg-transparent text-neutral-500 hover:bg-primary/10 hover:border-primary/70 hover:text-white'
                             )}
                             aria-pressed={isActive}
                           >
@@ -434,7 +423,7 @@ export function LaunchModal({ trigger }: LaunchModalProps = {}): ReactElement {
                           <LaunchTile
                             key={item.href}
                             item={item}
-                            forceDark={forceDark}
+                            forceDark={true}
                             pathname={pathname}
                             currentHost={currentHost}
                             onLinkClick={handleLinkClick}
@@ -449,10 +438,7 @@ export function LaunchModal({ trigger }: LaunchModalProps = {}): ReactElement {
                       <section key={group.title} aria-labelledby={`launch-group-${group.title}`}>
                         <h2
                           id={`launch-group-${group.title}`}
-                          className={cl(
-                            'text-xs font-semibold uppercase tracking-[0.25em]',
-                            forceDark ? 'text-neutral-400' : 'text-neutral-500 dark:text-neutral-400'
-                          )}
+                          className={cl('text-xs font-semibold uppercase tracking-[0.25em]', 'text-neutral-400')}
                         >
                           {group.title}
                         </h2>
@@ -461,7 +447,7 @@ export function LaunchModal({ trigger }: LaunchModalProps = {}): ReactElement {
                             <LaunchTile
                               key={item.href}
                               item={item}
-                              forceDark={forceDark}
+                              forceDark={true}
                               pathname={pathname}
                               currentHost={currentHost}
                               onLinkClick={handleLinkClick}

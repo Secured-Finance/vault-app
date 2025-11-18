@@ -1,5 +1,5 @@
 export const VAULTS_V3_MENU = [
-  { path: '/v3', label: 'Vaults' },
+  { path: '/', label: 'Vaults' },
   {
     path: 'https://docs.secured.finance/',
     label: 'Docs'

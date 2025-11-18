@@ -7,20 +7,20 @@
     <meta name="description" content="The yield protocol for digital assets" />
     
     <!-- Open Graph -->
-    <meta property="og:title" content="Yearn Finance" />
+    <meta property="og:title" content="Secured Finance Vaults" />
     <meta property="og:description" content="The yield protocol for digital assets" />
-    <meta property="og:image" content="https://yearn.fi/og.png" />
-    <meta property="og:url" content="https://yearn.fi" />
+    <meta property="og:image" content="https://vaults.secured.finance/og.png" />
+    <meta property="og:url" content="https://vaults.secured.finance" />
     <meta property="og:type" content="website" />
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Yearn Finance" />
+    <meta name="twitter:title" content="Secured Finance Vaults" />
     <meta name="twitter:description" content="The yield protocol for digital assets" />
-    <meta name="twitter:image" content="https://yearn.fi/og.png" />
+    <meta name="twitter:image" content="https://vaults.secured.finance/og.png" />
     
     <link rel="icon" href="/favicon.ico" />
-    <title>Yearn Finance</title>
+    <title>Secured Finance Vaults</title>
     <script>
       let darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
@@ -44,24 +44,12 @@
       function updateMode() {
         let isSystemDarkMode = darkModeMediaQuery.matches;
         let isDarkMode = window.localStorage.isDarkMode === 'true' || (!('isDarkMode' in window.localStorage) && isSystemDarkMode);
-        let isV3 = window.location.pathname.includes('v3');
-        let isHomePage = window.location.pathname === '/';
 
-        if (isV3) {
-          document.documentElement.classList.add('v3');
-          document.documentElement.classList.remove('dark');
-          document.documentElement.classList.remove('light');
-        } else if (isDarkMode || isHomePage) {
-          document.documentElement.classList.add('dark');
-          document.documentElement.classList.remove('light');
-          document.documentElement.classList.remove('v3');
-        } else {
-          document.documentElement.classList.remove('v3');
-          document.documentElement.classList.remove('dark');
-          document.documentElement.classList.add('light');
-        }
+        document.documentElement.classList.add('v3');
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.remove('light');
 
-        if (isDarkMode === isSystemDarkMode && !isHomePage) {
+        if (isDarkMode === isSystemDarkMode) {
           delete window.localStorage.isDarkMode;
         }
       }

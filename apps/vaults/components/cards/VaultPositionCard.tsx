@@ -18,7 +18,7 @@ export const VaultPositionCard: FC<{
   const apr = vault.apr?.forwardAPR?.netAPR || 0
   const isV3 = vault.version.startsWith('3') || vault.version.startsWith('~3')
   const href = isV3
-    ? `/v3/${vault.chainID}/${toAddress(vault.address)}`
+    ? `/${vault.chainID}/${toAddress(vault.address)}`
     : `/vaults/${vault.chainID}/${toAddress(vault.address)}`
 
   return (
@@ -33,7 +33,9 @@ export const VaultPositionCard: FC<{
             <div className={'flex items-center gap-2'}>
               <div className={'rounded-full'}>
                 <ImageWithFallback
-                  src={`${import.meta.env.VITE_BASE_YEARN_ASSETS_URI}/tokens/${vault.chainID}/${vault.token.address.toLowerCase()}/logo-32.png`}
+                  src={`${import.meta.env.VITE_BASE_YEARN_ASSETS_URI}/tokens/${
+                    vault.chainID
+                  }/${vault.token.address.toLowerCase()}/logo-32.png`}
                   alt={vault.symbol}
                   width={28}
                   height={28}

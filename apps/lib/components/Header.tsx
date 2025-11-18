@@ -99,39 +99,11 @@ function AppHeader(props: { supportedNetworks: Chain[] }): ReactElement {
   const { setShouldOpenCurtain, notificationStatus } = useNotifications()
 
   const menu = useMemo((): TMenu[] => {
-    const HOME_MENU = { path: '/apps', label: 'Apps' }
-
-    if (pathname.startsWith('/ycrv')) {
-      return [...APPS[AppName.YCRV].menu]
-    }
-
-    if (pathname.startsWith('/v3')) {
-      return [...APPS[AppName.VAULTSV3].menu]
-    }
-
     if (pathname.startsWith('/vaults-beta')) {
       return [...APPS[AppName.BETA].menu]
     }
 
-    if (pathname.startsWith('/vaults')) {
-      return [...APPS[AppName.VAULTS].menu]
-    }
-
-    if (pathname.startsWith('/veyfi')) {
-      return [...APPS[AppName.VEYFI].menu]
-    }
-
-    return [
-      HOME_MENU,
-      { path: 'https://docs.yearn.fi/', label: 'Docs', target: '_blank' },
-      { path: 'https://discord.gg/yearn', label: 'Support', target: '_blank' },
-      { path: 'https://blog.yearn.fi/', label: 'Blog', target: '_blank' },
-      {
-        path: 'https://gov.yearn.fi/',
-        label: 'Discourse',
-        target: '_blank'
-      }
-    ]
+    return [...APPS[AppName.VAULTSV3].menu]
   }, [pathname])
 
   const notificationDotColor = useMemo(() => {

@@ -20,7 +20,6 @@ import { Solver } from '@vaults-v2/types/solvers'
 import { motion } from 'framer-motion'
 import type { ReactElement } from 'react'
 import { useCallback, useState } from 'react'
-import { useLocation } from 'react-router'
 import type { Hash, TransactionReceipt } from 'viem'
 import { maxUint256 } from 'viem'
 
@@ -41,8 +40,6 @@ export function VaultDetailsQuickActionsButtons({
   const [allowanceFrom, setAllowanceFrom] = useState<TNormalizedBN>(zeroNormalizedBN)
   const [allowanceRouter, setAllowanceRouter] = useState<TNormalizedBN>(zeroNormalizedBN)
   const { actionParams, onChangeAmount, maxDepositPossible, isDepositing } = useActionFlow()
-  const location = useLocation()
-  const isV3Page = location.pathname.startsWith('/v3')
   const {
     onApprove,
     onExecuteDeposit,
@@ -129,25 +126,50 @@ export function VaultDetailsQuickActionsButtons({
         Solver.enum.InternalMigration === currentSolver
       ) {
         const toRefresh = [
-          { address: toAddress(actionParams?.selectedOptionFrom?.value), chainID },
-          { address: toAddress(actionParams?.selectedOptionTo?.value), chainID },
+          {
+            address: toAddress(actionParams?.selectedOptionFrom?.value),
+            chainID
+          },
+          {
+            address: toAddress(actionParams?.selectedOptionTo?.value),
+            chainID
+          },
           { address: toAddress(currentVault.address), chainID }
         ]
         if (currentVault.staking.available) {
-          toRefresh.push({ address: toAddress(currentVault.staking.address), chainID })
+          toRefresh.push({
+            address: toAddress(currentVault.staking.address),
+            chainID
+          })
         }
         onRefresh(toRefresh)
       } else if (Solver.enum.Cowswap === currentSolver || Solver.enum.Portals === currentSolver) {
         if (isDepositing) {
-          onRefresh([{ address: toAddress(actionParams?.selectedOptionTo?.value), chainID }])
+          onRefresh([
+            {
+              address: toAddress(actionParams?.selectedOptionTo?.value),
+              chainID
+            }
+          ])
         } else {
-          onRefresh([{ address: toAddress(actionParams?.selectedOptionFrom?.value), chainID }])
+          onRefresh([
+            {
+              address: toAddress(actionParams?.selectedOptionFrom?.value),
+              chainID
+            }
+          ])
         }
       } else {
         onRefresh([
           { address: toAddress(ETH_TOKEN_ADDRESS), chainID },
-          { address: toAddress(actionParams?.selectedOptionFrom?.value), chainID },
-          { address: toAddress(actionParams?.selectedOptionTo?.value), chainID }
+          {
+            address: toAddress(actionParams?.selectedOptionFrom?.value),
+            chainID
+          },
+          {
+            address: toAddress(actionParams?.selectedOptionTo?.value),
+            chainID
+          }
         ])
       }
       onChangeAmount(zeroNormalizedBN)
@@ -190,10 +212,19 @@ export function VaultDetailsQuickActionsButtons({
         await triggerRetrieveAllowance()
       },
       (txHash: Hash) => {
-        handleApproveNotification({ actionParams, status: 'pending', idToUpdate: id, txHash })
+        handleApproveNotification({
+          actionParams,
+          status: 'pending',
+          idToUpdate: id,
+          txHash
+        })
       },
       async (): Promise<void> => {
-        await handleApproveNotification({ actionParams, status: 'error', idToUpdate: id })
+        await handleApproveNotification({
+          actionParams,
+          status: 'error',
+          idToUpdate: id
+        })
       }
     )
   }, [currentSolver, handleApproveNotification, actionParams, onApprove, triggerRetrieveAllowance])
@@ -247,7 +278,7 @@ export function VaultDetailsQuickActionsButtons({
   ) {
     return (
       <Button
-        variant={isV3Page ? 'v3' : undefined}
+        variant="v3"
         className={'w-full'}
         isBusy={txStatusApprove.pending}
         isDisabled={isButtonDisabled || isZero(toBigInt(expectedOut?.raw))}
@@ -269,7 +300,7 @@ export function VaultDetailsQuickActionsButtons({
     ) {
       return (
         <Button
-          variant={isV3Page ? 'v3' : undefined}
+          variant="v3"
           onClick={async (): Promise<void> => {
             const correctActionParams: TActionParams = {
               ...actionParams,
@@ -282,7 +313,9 @@ export function VaultDetailsQuickActionsButtons({
                 value: vaultData.address
               }
             }
-            const id = await handleDepositNotification({ actionParams: correctActionParams })
+            const id = await handleDepositNotification({
+              actionParams: correctActionParams
+            })
             onExecuteDeposit(
               setTxStatusExecuteDeposit,
               async (receipt?: TransactionReceipt) => onSuccess(true, 'deposit and stake', receipt, id),
@@ -326,7 +359,7 @@ export function VaultDetailsQuickActionsButtons({
     }
     return (
       <Button
-        variant={isV3Page ? 'v3' : undefined}
+        variant="v3"
         onClick={async (): Promise<void> => {
           const id = await handleDepositNotification({ actionParams })
           onExecuteDeposit(
@@ -341,7 +374,11 @@ export function VaultDetailsQuickActionsButtons({
               })
             },
             async () => {
-              await handleDepositNotification({ actionParams, status: 'error', idToUpdate: id })
+              await handleDepositNotification({
+                actionParams,
+                status: 'error',
+                idToUpdate: id
+              })
             }
           )
         }}
@@ -364,7 +401,7 @@ export function VaultDetailsQuickActionsButtons({
 
   return (
     <Button
-      variant={isV3Page ? 'v3' : undefined}
+      variant="v3"
       onClick={async (): Promise<void> => {
         const id = await handleWithdrawNotification({ actionParams })
         onExecuteWithdraw(
@@ -379,10 +416,19 @@ export function VaultDetailsQuickActionsButtons({
             await onSuccess(false)
           },
           (txHash: Hash) => {
-            handleWithdrawNotification({ actionParams, status: 'pending', idToUpdate: id, txHash })
+            handleWithdrawNotification({
+              actionParams,
+              status: 'pending',
+              idToUpdate: id,
+              txHash
+            })
           },
           async () => {
-            await handleWithdrawNotification({ actionParams, status: 'error', idToUpdate: id })
+            await handleWithdrawNotification({
+              actionParams,
+              status: 'error',
+              idToUpdate: id
+            })
           }
         )
       }}

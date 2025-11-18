@@ -23,17 +23,17 @@ export default function Home(): ReactElement {
           <Cutaway
             title={'Follow us on X'}
             icon={<LogoTwitter className={'text-neutral-800'} />}
-            link={'https://yearn.finance/twitter'}
+            link={'https://vaults.secured.finance/twitter'}
           />
           <Cutaway
             title={'Join our Discord'}
             icon={<LogoDiscord className={'text-neutral-800'} />}
-            link={'https://discord.com/invite/yearn'}
+            link={'https://discord.com/invite/3kytCrv3qY'}
           />
           <Cutaway
             title={'View our GitHub'}
             icon={<LogoGithub className={'text-neutral-800'} />}
-            link={'https://github.com/yearn'}
+            link={'https://vaults.secured.finance/github'}
           />
         </div>
       </div>

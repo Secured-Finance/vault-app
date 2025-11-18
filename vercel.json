@@ -23,11 +23,7 @@
       "destination": "/:file*.$1"
     },
     {
-      "source": "/v3/:chainId/:address",
-      "destination": "/api/vault/meta?chainId=$1&address=$2"
-    },
-    {
-      "source": "/vaults/:chainId/:address",
+      "source": "/:chainId/:address",
       "destination": "/api/vault/meta?chainId=$1&address=$2"
     },
     {

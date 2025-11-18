@@ -29,7 +29,6 @@ import {
 import { stakeYBold, unstakeYBold } from '@vaults-v3/utils/actions'
 import type { ChangeEvent, ReactElement } from 'react'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
-import { useLocation } from 'react-router'
 
 /**************************************************************************************************
  ** The BoostMessage component will display a message to the user if the current vault has staking
@@ -42,18 +41,11 @@ function BoostMessage(props: { currentVault: TYDaemonVault; canStake: boolean })
   const hasVaultData = Boolean(props.currentVault.staking.available)
   const vaultDataSource = props.currentVault.staking.source
   const extraAPY = props.currentVault.apr.extra.stakingRewardsAPR
-  const location = useLocation()
-  const isV3Page = location.pathname.startsWith('/v3')
 
   if (hasVaultData && !props.canStake && vaultDataSource !== 'VeYFI') {
     return (
       <div className={'col-span-12 mt-0'}>
-        <div
-          className={cl(
-            'w-full rounded-lg p-3 text-neutral-0',
-            isV3Page ? 'bg-neutral-900' : 'dark:bg-neutral-900 bg-neutral-900'
-          )}
-        >
+        <div className={cl('w-full rounded-lg p-3 text-neutral-0 bg-neutral-900')}>
           <b className={'text-lg'}>{'The rewards program for this vault has ended'}</b>
           <div className={'flex flex-col gap-2'}>
             <p>{'You can unstake your vault tokens and claim any rewards at any time.'}</p>
@@ -66,12 +58,7 @@ function BoostMessage(props: { currentVault: TYDaemonVault; canStake: boolean })
   if (hasVaultData && vaultDataSource === 'OP Boost') {
     return (
       <div className={'col-span-12 mt-0'}>
-        <div
-          className={cl(
-            'w-full rounded-lg p-6 text-neutral-0',
-            isV3Page ? 'bg-neutral-900' : 'dark:bg-neutral-900 bg-neutral-900'
-          )}
-        >
+        <div className={cl('w-full rounded-lg p-6 text-neutral-0 bg-neutral-900')}>
           <b className={'text-lg'}>{'Great news everybody!'}</b>
           <div className={'mt-2 flex flex-col gap-2'}>
             <p>
@@ -86,16 +73,15 @@ function BoostMessage(props: { currentVault: TYDaemonVault; canStake: boolean })
   if (hasVaultData && vaultDataSource === 'VeYFI') {
     return (
       <div className={'col-span-12 mt-0 hidden'}>
-        <div
-          className={cl(
-            'w-full rounded-lg p-6 text-neutral-0',
-            isV3Page ? 'bg-neutral-900' : 'dark:bg-neutral-900 bg-neutral-900'
-          )}
-        >
+        <div className={cl('w-full rounded-lg p-6 text-neutral-0 bg-neutral-900')}>
           <b className={'text-lg'}>{'Yield is good, but more yield is good-er!'}</b>
           <div className={'mt-2 flex flex-col gap-2'}>
             <p>
-              {`This Vault has an active veYFI gauge which boosts your APY from ${formatAmount(extraAPY * 10)}% to ${formatAmount(extraAPY * 100)}% depending on the veYFI you have locked. Simply deposit and stake to start earning.`}
+              {`This Vault has an active veYFI gauge which boosts your APY from ${formatAmount(
+                extraAPY * 10
+              )}% to ${formatAmount(
+                extraAPY * 100
+              )}% depending on the veYFI you have locked. Simply deposit and stake to start earning.`}
             </p>
             <p className={'block'}>
               {'Learn more about veYFI rewards in the '}
@@ -118,16 +104,13 @@ function BoostMessage(props: { currentVault: TYDaemonVault; canStake: boolean })
   if (hasVaultData && vaultDataSource === 'Juiced') {
     return (
       <div className={'col-span-12 mt-0'}>
-        <div
-          className={cl(
-            'w-full rounded-lg p-6 text-neutral-0',
-            isV3Page ? 'bg-neutral-900' : 'dark:bg-neutral-900 bg-neutral-900'
-          )}
-        >
+        <div className={cl('w-full rounded-lg p-6 text-neutral-0 bg-neutral-900')}>
           <b className={'text-lg'}>{'Yield is good, but more yield is good-er!'}</b>
           <div className={'mt-2 flex flex-col gap-2'}>
             <p>
-              {`This Vault can be juiced for even more yield. Simply deposit and stake to receive juiced APYs of ${formatAmount(extraAPY * 100)}%.`}
+              {`This Vault can be juiced for even more yield. Simply deposit and stake to receive juiced APYs of ${formatAmount(
+                extraAPY * 100
+              )}%.`}
             </p>
             <p className={'block'}>
               {'Visit '}
@@ -145,12 +128,7 @@ function BoostMessage(props: { currentVault: TYDaemonVault; canStake: boolean })
   if (hasVaultData && vaultDataSource === 'V3 Staking') {
     return (
       <div className={'col-span-12 mt-0'}>
-        <div
-          className={cl(
-            'w-full rounded-lg p-6 text-neutral-0',
-            isV3Page ? 'bg-neutral-900' : 'dark:bg-neutral-900 bg-neutral-900'
-          )}
-        >
+        <div className={cl('w-full rounded-lg p-6 text-neutral-0 bg-neutral-900')}>
           <b className={'text-lg'}>{'Great news everybody!'}</b>
           <div className={'mt-2 flex flex-col gap-2'}>
             <p>
@@ -167,8 +145,6 @@ function BoostMessage(props: { currentVault: TYDaemonVault; canStake: boolean })
 
 function VeYFIBoostMessage(props: { currentVault: TYDaemonVault }): ReactElement {
   const vaultDataource = props.currentVault.staking.source
-  const location = useLocation()
-  const isV3Page = location.pathname.startsWith('/v3')
 
   if (vaultDataource !== 'VeYFI') {
     return <Fragment />
@@ -177,7 +153,7 @@ function VeYFIBoostMessage(props: { currentVault: TYDaemonVault }): ReactElement
   return (
     <div className={cl('flex w-full flex-col rounded-2xl p-6', 'bg-neutral-900')}>
       <b className={cl('text-lg text-neutral-100')}>{'veYFI Gauges have been retired'}</b>
-      <div className={cl('flex flex-col gap-2 py-2', isV3Page ? 'text-neutral-300' : 'text-neutral-400')}>
+      <div className={cl('flex flex-col gap-2 py-2 text-neutral-300')}>
         <p>{'All good things must come to an end!'}</p>
         <span className={'flex flex-row flex-wrap gap-1'}>
           <p>{'Please '}</p>
@@ -386,7 +362,9 @@ export function RewardsTab(props: {
    ** yVault tokens. If the approval is successful, the staking rewards data will be updated.
    *********************************************************************************************/
   const onApprove = useCallback(async (): Promise<void> => {
-    const id = await handleApproveNotification({ actionParams: approveActionParams })
+    const id = await handleApproveNotification({
+      actionParams: approveActionParams
+    })
     const result = await approveERC20({
       connector: provider,
       chainID: props.currentVault.chainID,
@@ -429,7 +407,10 @@ export function RewardsTab(props: {
    ** stakeVeYFIGauge function.
    *********************************************************************************************/
   const onStake = useCallback(async (): Promise<void> => {
-    const id = await handleStakeNotification({ actionParams: stakeActionParams, type: 'stake' })
+    const id = await handleStakeNotification({
+      actionParams: stakeActionParams,
+      type: 'stake'
+    })
 
     if (props.currentVault.staking.source === 'VeYFI') {
       const result = await stakeVeYFIAction({
@@ -641,7 +622,10 @@ export function RewardsTab(props: {
    ** refreshed.
    *********************************************************************************************/
   const onClaim = useCallback(async (): Promise<void> => {
-    const id = await handleClaimNotification({ actionParams: claimActionParams, type: 'claim' })
+    const id = await handleClaimNotification({
+      actionParams: claimActionParams,
+      type: 'claim'
+    })
     const result = await claimAction({
       connector: provider,
       chainID: props.currentVault.chainID,
@@ -680,11 +664,19 @@ export function RewardsTab(props: {
    ** function from the useYearn hook to get the price of the tokens.
    *********************************************************************************************/
   const rewardTokenPrice = useMemo(
-    () => getPrice({ address: rewardTokenBalance.address, chainID: rewardTokenBalance.chainID }),
+    () =>
+      getPrice({
+        address: rewardTokenBalance.address,
+        chainID: rewardTokenBalance.chainID
+      }),
     [getPrice, rewardTokenBalance]
   )
   const vaultTokenPrice = useMemo(
-    () => getPrice({ address: props.currentVault.address, chainID: props.currentVault.chainID }),
+    () =>
+      getPrice({
+        address: props.currentVault.address,
+        chainID: props.currentVault.chainID
+      }),
     [getPrice, props.currentVault]
   )
 
@@ -892,7 +884,10 @@ export function RewardsTab(props: {
                 className={'w-full'}
                 legend={
                   <div className={'flex items-center justify-between'}>
-                    <p>{`${formatAmount(vaultData.vaultBalanceOf.normalized, 6)} ${props.currentVault.symbol} available to stake`}</p>
+                    <p>{`${formatAmount(
+                      vaultData.vaultBalanceOf.normalized,
+                      6
+                    )} ${props.currentVault.symbol} available to stake`}</p>
                     <p>{`${formatCounterValue(vaultData.vaultBalanceOf.normalized, vaultTokenPrice.normalized)}`}</p>
                   </div>
                 }
@@ -963,7 +958,10 @@ export function RewardsTab(props: {
               </div>
               <legend className={'mt-1 pl-0.5 text-xs text-neutral-600 opacity-70 md:mr-0'} suppressHydrationWarning>
                 <div className={'flex items-center justify-between'}>
-                  <p>{`${formatAmount(vaultData.stakedBalanceOf.normalized, 6)} ${props.currentVault.symbol} staked`}</p>
+                  <p>{`${formatAmount(
+                    vaultData.stakedBalanceOf.normalized,
+                    6
+                  )} ${props.currentVault.symbol} staked`}</p>
                   <p>{`${formatCounterValue(vaultData.stakedBalanceOf.normalized, vaultTokenPrice.normalized)}`}</p>
                 </div>
               </legend>
@@ -989,7 +987,9 @@ export function RewardsTab(props: {
               className={'w-full'}
               legend={
                 <div className={'flex items-center justify-between'}>
-                  <p>{`${formatAmount(vaultData.stakedEarned.normalized, 6)} ${rewardTokenBalance.symbol || (props.currentVault.staking.rewards || [])[0]?.symbol || ''} available to claim`}</p>
+                  <p>{`${formatAmount(vaultData.stakedEarned.normalized, 6)} ${
+                    rewardTokenBalance.symbol || (props.currentVault.staking.rewards || [])[0]?.symbol || ''
+                  } available to claim`}</p>
                   <p>{`${formatCounterValue(vaultData.stakedEarned.normalized, rewardTokenPrice.normalized)}`}</p>
                 </div>
               }

@@ -50,7 +50,7 @@ export function FooterNav({ onClose }: { onClose?: () => void }): ReactElement {
       </div>
       <div className={'flex w-full items-center justify-center gap-6'}>
         <Link
-          href={'https://discord.com/invite/yearn'}
+          href={'https://discord.com/invite/3kytCrv3qY'}
           target={'_blank'}
           className={
             'flex items-center justify-center rounded-full bg-white/10 p-3 transition-colors hover:bg-white/20'

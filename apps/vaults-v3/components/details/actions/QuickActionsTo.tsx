@@ -12,7 +12,6 @@ import { useActionFlow } from '@vaults-v2/contexts/useActionFlow'
 import { useSolver } from '@vaults-v2/contexts/useSolver'
 import type { TStakingInfo } from '@vaults-v2/hooks/useVaultStakingData'
 import { Fragment, type ReactElement, useMemo } from 'react'
-import { useLocation } from 'react-router'
 
 function VaultAPY({
   currentVault,
@@ -127,8 +126,6 @@ export function VaultDetailsQuickActionsTo(props: {
   const { isAutoStakingEnabled } = useYearn()
 
   const { expectedOut, isLoadingExpectedOut } = useSolver()
-  const location = useLocation()
-  const isV3Page = location.pathname.startsWith('/v3')
   const isMigrationAvailable = currentVault?.migration?.available
   const selectedOptionToPricePerToken = useYearnTokenPrice({
     address: toAddress(actionParams?.selectedOptionTo?.value),
@@ -173,10 +170,8 @@ export function VaultDetailsQuickActionsTo(props: {
   function renderMultipleOptionsFallback(): ReactElement {
     return (
       <Dropdown
-        className={isV3Page ? 'rounded-lg bg-neutral-300' : 'rounded-lg'}
-        comboboxOptionsClassName={
-          isV3Page ? 'bg-neutral-300 w-full rounded-lg scrollbar-none' : 'rounded-lg scrollbar-none'
-        }
+        className={'rounded-lg bg-neutral-300'}
+        comboboxOptionsClassName={'bg-neutral-300 w-full rounded-lg scrollbar-none'}
         defaultOption={possibleOptionsTo[0]}
         options={possibleOptionsTo}
         selected={actionParams?.selectedOptionTo}

@@ -1,4 +1,3 @@
-import { LandingAppHeader } from '@landing/components/common/Header'
 import AppHeader from '@lib/components/Header'
 import { Meta } from '@lib/components/Meta'
 import { WithFonts } from '@lib/components/WithFonts'
@@ -24,7 +23,6 @@ import { AppRoutes } from './routes'
 function WithLayout(): ReactElement {
   const location = useLocation()
   const isAppsPage = location.pathname?.startsWith('/apps')
-  const isHomePage = location.pathname === '/'
 
   if (isAppsPage) {
     return (
@@ -44,7 +42,7 @@ function WithLayout(): ReactElement {
   return (
     <>
       <div className={cl('mx-auto mb-0 flex z-60 max-w-[1232px] absolute top-0 inset-x-0 px-4')}>
-        {isHomePage ? <LandingAppHeader /> : <AppHeader supportedNetworks={SUPPORTED_NETWORKS} />}
+        <AppHeader supportedNetworks={SUPPORTED_NETWORKS} />
       </div>
       <div id={'app'} className={cl('mx-auto mb-0 flex')}>
         <div className={'block size-full min-h-max'}>
@@ -63,24 +61,24 @@ function App(): ReactElement {
   const asPath = location.pathname
 
   // Get most basic og and uri info
-  let ogUrl = manifest.og || 'https://yearn.fi/og.png'
-  let pageUri = manifest.uri || 'https://yearn.fi'
+  let ogUrl = manifest.og || 'https://vaults.secured.finance/og.png'
+  let pageUri = manifest.uri || 'https://vaults.secured.finance'
 
   const ogBaseUrl = 'https://og.yearn.fi'
 
-  if (asPath.startsWith('/v3/') && asPath.split('/').length === 4) {
+  if (asPath.split('/').length === 3) {
     // Default to production
 
-    // Use dynamic OG API for V3 vault pages: /v3/[chainID]/[address]
+    // Use dynamic OG API for V3 vault pages: /[chainID]/[address]
     const [, , chainID, address] = asPath.split('/')
     ogUrl = `${ogBaseUrl}/api/og/yearn/vault/${chainID}/${address}`
-    pageUri = `https://yearn.fi${asPath}`
+    pageUri = `https://vaults.secured.finance${asPath}`
   }
   if (asPath.startsWith('/vaults/') && asPath.split('/').length === 4) {
     // Use dynamic OG API for v2 vault pages: /vaults/[chainID]/[address]
     const [, , chainID, address] = asPath.split('/')
     ogUrl = `${ogBaseUrl}/api/og/yearn/vault/${chainID}/${address}`
-    pageUri = `https://yearn.fi${asPath}`
+    pageUri = `https://vaults.secured.finance${asPath}`
   }
 
   return (

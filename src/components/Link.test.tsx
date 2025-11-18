@@ -14,7 +14,7 @@ export function LinkExamples() {
       {/* Internal links - will use React Router */}
       <Link href="/apps">Go to Apps</Link>
       <Link href="/vaults">View Vaults</Link>
-      <Link to="/v3">V3 Vaults</Link>
+      <Link to="/">V3 Vaults</Link>
 
       {/* External links - will use standard anchor tags with target="_blank" */}
       <Link href="https://twitter.com/yearnfi">Twitter</Link>

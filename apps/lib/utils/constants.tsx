@@ -309,57 +309,12 @@ export const ALL_APPS = [
   ...OLD_APPS
 ]
 
-export const CATEGORIES_DICT = {
-  'featured-apps': {
-    categoryName: 'Featured Products',
-    categoryDescription:
-      'Yearn is a decentralized suite of products helping individuals, DAOs, and other protocols earn yield on their digital assets.',
-    categorySlug: 'featured-apps',
-    apps: FEATURED_APPS
-  },
-  vaults: {
-    categoryName: 'Yearn Vaults',
-    categoryDescription:
-      'Yearn is a decentralized suite of products helping individuals, DAOs, and other protocols earn yield on their digital assets.',
-    categorySlug: 'vaults',
-    apps: VAULTS_APPS
-  },
-  'yearn-apps': {
-    categoryName: 'Other Yearn Products',
-    categoryDescription:
-      'Yearn is a decentralized suite of products helping individuals, DAOs, and other protocols earn yield on their digital assets.',
-    categorySlug: 'yearn-apps',
-    apps: YEARN_APPS
-  },
-  'yearn-x': {
-    categoryName: 'Yearn X Projects',
-    categoryDescription:
-      'Yearn is a decentralized suite of products helping individuals, DAOs, and other protocols earn yield on their digital assets.',
-    categorySlug: 'yearn-x',
-    apps: YEARN_X_APPS
-  },
-  integrations: {
-    categoryName: 'Integrations',
-    categoryDescription:
-      'Yearn is a decentralized suite of products helping individuals, DAOs, and other protocols earn yield on their digital assets.',
-    categorySlug: 'integrations',
-    apps: INTEGRATIONS_APPS
-  },
-  'retired-apps': {
-    categoryName: 'Retired Products',
-    categoryDescription:
-      'Yearn is a decentralized suite of products helping individuals, DAOs, and other protocols earn yield on their digital assets.',
-    categorySlug: 'Retired Products',
-    apps: OLD_APPS
-  }
-}
-
 export const LANDING_SIDEBAR_LINKS = [
   { title: 'Discourse', href: 'https://gov.yearn.fi/' },
   { title: 'Docs', href: 'https://docs.yearn.fi/' },
   { title: 'Blog', href: 'https://blog.yearn.fi/' },
-  { title: 'Support', href: 'https://discord.com/invite/yearn' },
-  { title: 'Discord', href: 'https://discord.com/invite/yearn' },
+  { title: 'Support', href: 'https://discord.com/invite/3kytCrv3qY' },
+  { title: 'Discord', href: 'https://discord.com/invite/3kytCrv3qY' },
   { title: 'Twitter', href: 'https://twitter.com/yearnfi' },
   { title: 'API', href: 'https://github.com/yearn/ydaemon' }
 ]

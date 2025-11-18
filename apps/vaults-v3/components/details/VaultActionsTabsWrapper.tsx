@@ -126,7 +126,11 @@ export function BoostMessage(props: {
       <div className={'col-span-12 flex p-4 pt-0 md:px-8 md:pb-6'}>
         <div className={'w-full rounded-lg bg-[#34A14F] p-2 md:px-6 md:py-4'}>
           <b className={'text-base text-neutral-900'}>
-            {`This Vault has an active veYFI gauge which boosts your APY from ${formatAmount(extraAPY * 10)}% to ${formatAmount(extraAPY * 100)}% depending on the veYFI you have locked. Simply deposit and stake to start earning.`}
+            {`This Vault has an active veYFI gauge which boosts your APY from ${formatAmount(
+              extraAPY * 10
+            )}% to ${formatAmount(
+              extraAPY * 100
+            )}% depending on the veYFI you have locked. Simply deposit and stake to start earning.`}
           </b>
           <b className={'block text-neutral-900'}>
             {'Learn more about veYFI rewards in the '}
@@ -149,7 +153,9 @@ export function BoostMessage(props: {
       <div className={'col-span-12 flex p-4 pt-0 md:px-8 md:pb-6'}>
         <div className={'w-full rounded-lg bg-[#34A14F] p-2 md:px-6 md:py-4'}>
           <b className={'text-base text-neutral-900'}>
-            {`This Vault can be juiced for even more yield. Simply deposit and stake to receive juiced APYs of ${formatAmount(extraAPY * 100)}%.`}
+            {`This Vault can be juiced for even more yield. Simply deposit and stake to receive juiced APYs of ${formatAmount(
+              extraAPY * 100
+            )}%.`}
           </b>
           <b className={'block text-neutral-900'}>
             {'Visit '}
@@ -237,7 +243,6 @@ export const VaultDetailsTab = React.memo(function VaultDetailsTab(props: {
   const navigate = useNavigate()
   const location = useLocation()
   const [searchParams] = useSearchParams()
-  const isV3Page = location.pathname.startsWith('/v3')
   const stakingRewardSource = props.currentVault.staking.source
   const tabLabel = useMemo(() => {
     if (props.tab.label === 'Boost' && stakingRewardSource === 'VeYFI') {
@@ -258,7 +263,9 @@ export const VaultDetailsTab = React.memo(function VaultDetailsTab(props: {
   const handleClick = useCallback((): void => {
     const newSearchParams = new URLSearchParams(searchParams)
     newSearchParams.set('action', props.tab.slug || '')
-    navigate(`${location.pathname}?${newSearchParams.toString()}`, { replace: true })
+    navigate(`${location.pathname}?${newSearchParams.toString()}`, {
+      replace: true
+    })
     props.onSwitchTab(props.tab)
   }, [searchParams, props.tab, location.pathname, navigate, props.onSwitchTab, props])
 
@@ -269,11 +276,9 @@ export const VaultDetailsTab = React.memo(function VaultDetailsTab(props: {
         aria-selected={props.selectedTab.value === props.tab.value}
         className={cl(
           'hover-fix tab relative px-2',
-          isV3Page
-            ? props.selectedTab.value === props.tab.value
-              ? 'text-neutral-900!'
-              : 'text-neutral-900/50! hover:text-neutral-900!'
-            : ''
+          props.selectedTab.value === props.tab.value
+            ? 'text-neutral-900!'
+            : 'text-neutral-900/50! hover:text-neutral-900!'
         )}
       >
         {tabLabel}
