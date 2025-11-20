@@ -8,7 +8,9 @@ import type { TAddress, TNDict, TToken } from '@lib/types'
 import type { TApp } from '@lib/types/mixed'
 import { arbitrum, mainnet } from 'viem/chains'
 import { toAddress } from './tools.address'
-import { filecoinCalibration } from './wagmi'
+import { filecoin, filecoinCalibration } from './wagmi'
+
+const showTestnets = import.meta.env.VITE_SHOW_TESTNETS === 'true'
 
 export const SUPPORTED_NETWORKS = [
   mainnet,
@@ -19,8 +21,9 @@ export const SUPPORTED_NETWORKS = [
   arbitrum,
   // sonic,
   // katana,
+  filecoin,
   filecoinCalibration
-]
+].filter((network) => showTestnets || !network.testnet)
 
 export const MULTICALL3_ADDRESS = toAddress('0xcA11bde05977b3631167028862bE2a173976CA11')
 

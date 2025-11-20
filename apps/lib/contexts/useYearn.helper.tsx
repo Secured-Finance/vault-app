@@ -71,14 +71,31 @@ export function useYearnTokens({
     const extraTokens: TUseBalancesTokens[] = []
     extraTokens.push(
       ...[
-        { chainID: 1, address: ETH_TOKEN_ADDRESS, decimals: 18, name: 'Ether', symbol: 'ETH' },
-        { chainID: 10, address: ETH_TOKEN_ADDRESS, decimals: 18, name: 'Ether', symbol: 'ETH' },
-        { chainID: 137, address: ETH_TOKEN_ADDRESS, decimals: 18, name: 'Matic', symbol: 'POL' },
-        { chainID: 250, address: ETH_TOKEN_ADDRESS, decimals: 18, name: 'Fantom', symbol: 'FTM' },
-        { chainID: 8453, address: ETH_TOKEN_ADDRESS, decimals: 18, name: 'Ether', symbol: 'ETH' },
-        { chainID: 42161, address: ETH_TOKEN_ADDRESS, decimals: 18, name: 'Ether', symbol: 'ETH' }
+        // { chainID: 1, address: ETH_TOKEN_ADDRESS, decimals: 18, name: 'Ether', symbol: 'ETH' },
+        // { chainID: 10, address: ETH_TOKEN_ADDRESS, decimals: 18, name: 'Ether', symbol: 'ETH' },
+        // { chainID: 137, address: ETH_TOKEN_ADDRESS, decimals: 18, name: 'Matic', symbol: 'POL' },
+        // { chainID: 250, address: ETH_TOKEN_ADDRESS, decimals: 18, name: 'Fantom', symbol: 'FTM' },
+        // { chainID: 8453, address: ETH_TOKEN_ADDRESS, decimals: 18, name: 'Ether', symbol: 'ETH' },
+        // { chainID: 42161, address: ETH_TOKEN_ADDRESS, decimals: 18, name: 'Ether', symbol: 'ETH' },
+        {
+          chainID: 314,
+          address: ETH_TOKEN_ADDRESS,
+          decimals: 18,
+          name: 'Filecoin',
+          symbol: 'FIL'
+        }
       ]
     )
+
+    if (import.meta.env.SHOW_TESTNETS === 'true') {
+      extraTokens.push({
+        chainID: 314159,
+        address: ETH_TOKEN_ADDRESS,
+        decimals: 18,
+        name: 'Filecoin Calibration',
+        symbol: 'tFIL'
+      })
+    }
 
     for (const token of extraTokens) {
       const key = `${token.chainID}/${toAddress(token.address)}`

@@ -41,6 +41,7 @@ export function Filters({
       option.value === 8453 ||
       option.value === 146 ||
       option.value === 747474 ||
+      option.value === 314 ||
       option.value === 314159
   )
   const typeOptions = useMemo((): TMultiSelectOptionProps[] => {

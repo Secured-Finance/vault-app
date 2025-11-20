@@ -3,7 +3,7 @@ import { useFetchYearnPrices } from '@lib/hooks/useFetchYearnPrices'
 import { useFetchYearnVaults } from '@lib/hooks/useFetchYearnVaults'
 import { type TKatanaAprs, useKatanaAprs } from '@lib/hooks/useKatanaAprs'
 import type { TAddress, TDict, TNormalizedBN } from '@lib/types'
-import { toAddress, toNormalizedBN, zeroNormalizedBN } from '@lib/utils'
+import { SUPPORTED_NETWORKS, toAddress, toNormalizedBN, zeroNormalizedBN } from '@lib/utils'
 import type { TYDaemonEarned } from '@lib/utils/schemas/yDaemonEarnedSchema'
 import type { TYDaemonPricesChain } from '@lib/utils/schemas/yDaemonPricesSchema'
 import type { TYDaemonVault, TYDaemonVaults } from '@lib/utils/schemas/yDaemonVaultsSchemas'
@@ -91,7 +91,8 @@ export const YearnContextApp = memo(function YearnContextApp({ children }: { chi
 
   const prices = useFetchYearnPrices()
   const earned = useFetchYearnEarnedForUser()
-  const { vaults: rawVaults, vaultsMigrations, vaultsRetired, isLoading, mutate } = useFetchYearnVaults()
+  const supportedChains = SUPPORTED_NETWORKS.map((n) => n.id)
+  const { vaults: rawVaults, vaultsMigrations, vaultsRetired, isLoading, mutate } = useFetchYearnVaults(supportedChains)
   const { data: katanaAprs, isLoading: isLoadingKatanaAprs } = useKatanaAprs()
 
   const vaults = useMemo(() => {

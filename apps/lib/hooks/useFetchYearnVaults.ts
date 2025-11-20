@@ -17,7 +17,7 @@ import { type Address, zeroAddress } from 'viem'
  ** - The vaults that are in the migration process
  ** - The retired vaults
  *****************************************************************************/
-function useFetchYearnVaults(chainIDs?: number[] | undefined): {
+function useFetchYearnVaults(chainIDs: number[]): {
   vaults: TDict<TYDaemonVault>
   vaultsMigrations: TDict<TYDaemonVault>
   vaultsRetired: TDict<TYDaemonVault>
@@ -38,7 +38,7 @@ function useFetchYearnVaults(chainIDs?: number[] | undefined): {
       strategiesDetails: 'withDetails',
       strategiesCondition: 'inQueue',
 
-      chainIDs: chainIDs ? chainIDs.join(',') : [1, 42161, 314159].join(','),
+      chainIDs: chainIDs.join(','),
       limit: '2500'
     })}`,
     schema: yDaemonVaultsSchema,
@@ -50,7 +50,7 @@ function useFetchYearnVaults(chainIDs?: number[] | undefined): {
   // const vaultsMigrations: TYDaemonVaults = useMemo(() => [], []);
   const { data: vaultsMigrations } = useFetch<TYDaemonVaults>({
     endpoint: `${yDaemonBaseUriWithoutChain}/vaults?${new URLSearchParams({
-      chainIDs: chainIDs ? chainIDs.join(',') : [1, 42161, 314159].join(','),
+      chainIDs: chainIDs.join(','),
       migratable: 'nodust',
       limit: '2500'
     })}`,
@@ -60,6 +60,7 @@ function useFetchYearnVaults(chainIDs?: number[] | undefined): {
   // const vaultsRetired: TYDaemonVaults = useMemo(() => [], []);
   const { data: vaultsRetired } = useFetch<TYDaemonVaults>({
     endpoint: `${yDaemonBaseUriWithoutChain}/vaults/retired?${new URLSearchParams({
+      chainIDs: chainIDs.join(','),
       limit: '2500'
     })}`,
     schema: yDaemonVaultsSchema
