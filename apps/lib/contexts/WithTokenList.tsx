@@ -93,7 +93,7 @@ export const WithTokenList = ({
    ** This is the list coming from the props.
    ************************************************************************************/
   useAsyncTrigger(async (): Promise<void> => {
-    const unhashedLists = hashList.split(',')
+    const unhashedLists = !!hashList ? hashList.split(',') : []
     const responses = await Promise.allSettled(
       unhashedLists.map(async (eachURI: string): Promise<AxiosResponse> => axios.get(eachURI))
     )
@@ -103,7 +103,10 @@ export const WithTokenList = ({
     for (const [index, response] of responses.entries()) {
       if (response.status === 'fulfilled') {
         tokens.push(...(response.value.data as TTokenList).tokens)
-        fromList.push({ ...(response.value.data as TTokenList), uri: unhashedLists[index] })
+        fromList.push({
+          ...(response.value.data as TTokenList),
+          uri: unhashedLists[index]
+        })
       }
     }
 
@@ -168,7 +171,10 @@ export const WithTokenList = ({
       const [fromUserList] = await Promise.allSettled([axios.get(eachURI)])
 
       if (fromUserList.status === 'fulfilled') {
-        fromList.push({ ...(fromUserList.value.data as TTokenList), uri: eachURI })
+        fromList.push({
+          ...(fromUserList.value.data as TTokenList),
+          uri: eachURI
+        })
         const { tokens } = fromUserList.value.data
         for (const eachToken of tokens) {
           if (!tokenListTokens[eachToken.chainId ?? eachToken.chainID]) {
