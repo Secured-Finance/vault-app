@@ -49,7 +49,7 @@ function About(): ReactElement {
           </p>
           <p className={'pb-4 text-neutral-600'}>
             {
-              "Yearn Vaults are like crypto allocators in cyberspace. You deposit your assets, and Yearn's smart contracts put them to work within the DeFi ecosystem, returning the earned yield back to you."
+              "Secured Finance Vaults are like crypto allocators in cyberspace. You deposit your assets, and Secured Finance's smart contracts put them to work within the DeFi ecosystem, returning the earned yield back to you."
             }
           </p>
           <p className={'pb-4 text-neutral-600'}>

@@ -49,10 +49,10 @@ export function VaultDetailsAbout({ currentVault }: { currentVault: TYDaemonVaul
     }
     return (
       <>
-        Sorry, we don't have a description for this vault right now. To learn more about how Yearn Vaults work, check
-        out our{' '}
+        Sorry, we don't have a description for this vault right now. To learn more about how Secured Finance Vaults
+        work, check out our{' '}
         <a
-          href="https://docs.yearn.fi"
+          href="https://docs.secured.finance/"
           target="_blank"
           rel="noopener noreferrer"
           className="text-neutral-900 underline"
@@ -61,21 +61,12 @@ export function VaultDetailsAbout({ currentVault }: { currentVault: TYDaemonVaul
         </a>
         , or if you want to learn more about this vault, head to our{' '}
         <a
-          href="https://discord.gg/yearn"
+          href="https://discord.gg/3kytCrv3qY"
           target="_blank"
           rel="noopener noreferrer"
           className="text-neutral-900 underline"
         >
           discord
-        </a>{' '}
-        or{' '}
-        <a
-          href="https://t.me/yearnfinance"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-neutral-900 underline"
-        >
-          telegram
         </a>{' '}
         and ask.
       </>
@@ -89,8 +80,12 @@ export function VaultDetailsAbout({ currentVault }: { currentVault: TYDaemonVaul
           <b className={'text-neutral-900'}>{'Description'}</b>
           <div className={'mt-4 text-neutral-900/50'}>
             {typeof getVaultDescription() === 'string' ? (
-              /* biome-ignore lint/security/noDangerouslySetInnerHtml: Controlled vault description content */
-              <p dangerouslySetInnerHTML={{ __html: getVaultDescription() as string }} />
+              <p
+                /* biome-ignore lint/security/noDangerouslySetInnerHtml: Controlled vault description content */
+                dangerouslySetInnerHTML={{
+                  __html: getVaultDescription() as string
+                }}
+              />
             ) : (
               <p>{getVaultDescription()}</p>
             )}
