@@ -86,6 +86,7 @@ const Logo = () => (
       />
     </g>
     <defs>
+      {/* biome-ignore lint/correctness/useUniqueElementIds: Static SVG in server-side OG generation - no DOM duplication risk */}
       <clipPath id="clip0_4029_812">
         <rect width="300" height="30" fill="white" transform="translate(0 0.5)" />
       </clipPath>
