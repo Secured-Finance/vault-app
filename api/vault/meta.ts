@@ -16,13 +16,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     let html = baseHtml
 
-    // Generate dynamic meta tags
-    const ogBaseUrl = 'https://og.yearn.fi'
-    const ogImageUrl = `${ogBaseUrl}/api/og/yearn/vault/${chainId}/${address}`
-    const canonicalUrl = `https://vaults.secured.finance/${chainId}/${address}`
+    // Get base URL from request headers
+    const protocol = req.headers['x-forwarded-proto'] || 'https'
+    const host = req.headers['x-forwarded-host'] || req.headers.host || 'vaults.secured.finance'
+    const baseUrl = `${protocol}://${host}`
 
-    const title = 'Yearn Vault'
-    const description = "Earn yield on your crypto with Yearn's automated vault strategies"
+    console.log('baseUrl:', baseUrl)
+
+    // Generate dynamic meta tags
+    const ogImageUrl = `${baseUrl}/api/og?chainId=${chainId}&address=${address}`
+    const canonicalUrl = `${baseUrl}/${chainId}/${address}`
+
+    const title = 'Secured Finance Vault'
+    const description = "Earn yield on your crypto with Secured Finance's automated vault strategies"
 
     // Inject meta tags
     const metaTags = `

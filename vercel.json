@@ -2,6 +2,11 @@
   "installCommand": "bun install --frozen-lockfile",
   "buildCommand": "bun run build",
   "outputDirectory": "dist",
+  "functions": {
+    "api/og.tsx": {
+      "maxDuration": 60
+    }
+  },
   "redirects": [
     {
       "source": "/_next/image/:path*",
