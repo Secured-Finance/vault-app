@@ -22,7 +22,6 @@ interface VaultData {
 }
 
 const Logo = () => (
-  /* prettier-ignore */
   <svg width="400" height="41" viewBox="0 0 300 31" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clipPath="url(#clip0_4029_812)">
       <path
@@ -87,7 +86,6 @@ const Logo = () => (
       />
     </g>
     <defs>
-      {/* biome-ignore lint/correctness/useUniqueElementIds: Static SVG in OG image generation */}
       <clipPath id="clip0_4029_812">
         <rect width="300" height="30" fill="white" transform="translate(0 0.5)" />
       </clipPath>
