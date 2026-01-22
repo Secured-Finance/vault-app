@@ -84,7 +84,7 @@ function App(): ReactElement {
   return (
     <>
       <Meta
-        title={manifest.name || 'Yearn'}
+        title={manifest.name || 'Secured Finance'}
         description={manifest.description || 'The yield protocol for digital assets'}
         titleColor={'#ffffff'}
         themeColor={'#000000'}

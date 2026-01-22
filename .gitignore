@@ -47,3 +47,4 @@ _app
 
 # local worktree clones
 yearn.fi-worktree-*
+.env*.local
