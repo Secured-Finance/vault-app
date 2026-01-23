@@ -11,13 +11,12 @@ import { LogoGithub } from '../icons/LogoGithub'
 import type { TMenu } from './Header'
 
 const menu: TMenu[] = [
-  { path: '/apps', label: 'Apps' },
-  { path: 'https://docs.yearn.fi/', label: 'Docs', target: '_blank' },
-  { path: 'https://discord.gg/yearn', label: 'Support', target: '_blank' },
-  { path: 'https://blog.yearn.fi/', label: 'Blog', target: '_blank' },
+  { path: 'https://docs.secured.finance/', label: 'Docs', target: '_blank' },
+  { path: 'https://discord.gg/3kytCrv3qY', label: 'Support', target: '_blank' },
+  { path: 'https://blog.secured.finance/', label: 'Blog', target: '_blank' },
   {
-    path: 'https://gov.yearn.fi/',
-    label: 'Discourse',
+    path: import.meta.env.VITE_FIXED_INCOME_MARKET_LINK || 'https://app.secured.finance/',
+    label: 'Fixed Income',
     target: '_blank'
   }
 ]
@@ -50,7 +49,7 @@ export function FooterNav({ onClose }: { onClose?: () => void }): ReactElement {
       </div>
       <div className={'flex w-full items-center justify-center gap-6'}>
         <Link
-          href={'https://discord.com/invite/3kytCrv3qY'}
+          href={'https://discord.gg/3kytCrv3qY'}
           target={'_blank'}
           className={
             'flex items-center justify-center rounded-full bg-white/10 p-3 transition-colors hover:bg-white/20'
@@ -59,7 +58,7 @@ export function FooterNav({ onClose }: { onClose?: () => void }): ReactElement {
           <IconDiscord className={'size-7 text-white'} />
         </Link>
         <Link
-          href={'https://github.com/yearn'}
+          href={'https://github.com/Secured-Finance'}
           target={'_blank'}
           className={
             'flex items-center justify-center rounded-full bg-white/10 p-3 transition-colors hover:bg-white/20'
@@ -68,7 +67,7 @@ export function FooterNav({ onClose }: { onClose?: () => void }): ReactElement {
           <LogoGithub className={'size-7 text-white'} />
         </Link>
         <Link
-          href={'https://x.com/yearnfi'}
+          href={'https://x.com/Secured_Fi'}
           target={'_blank'}
           className={
             'flex items-center justify-center rounded-full bg-white/10 p-3 transition-colors hover:bg-white/20'
