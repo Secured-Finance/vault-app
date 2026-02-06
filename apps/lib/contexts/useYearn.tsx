@@ -15,7 +15,7 @@ import type { KeyedMutator } from 'swr'
 import { deserialize, serialize } from 'wagmi'
 
 export const DEFAULT_SLIPPAGE = 0.5
-export const DEFAULT_MAX_LOSS = 1n
+export const DEFAULT_MAX_LOSS = 50n
 
 type TTokenAndChain = { address: TAddress; chainID: number }
 export type TYearnContext = {

@@ -32,14 +32,6 @@ function MaxLossSection(): ReactElement {
       <legend className={'text-xs text-neutral-500'}>{'Maximum acceptable loss when withdrawing from vaults.'}</legend>
       <div className={'flex flex-row space-x-2 pt-2'}>
         <button
-          onClick={(): void => setMaxLoss(5n)}
-          className={`flex h-10 items-center rounded-lg border bg-neutral-100 px-1.5 py-2 ${
-            maxLoss === 5n ? 'border-neutral-900/40' : 'border-transparent'
-          }`}
-        >
-          <p className={'font-number px-2 text-center text-neutral-900 '}>{'0.05%'}</p>
-        </button>
-        <button
           onClick={(): void => setMaxLoss(10n)}
           className={`flex h-10 items-center rounded-lg border bg-neutral-100 px-1.5 py-2 ${
             maxLoss === 10n ? 'border-neutral-900/40' : 'border-transparent'
@@ -47,9 +39,17 @@ function MaxLossSection(): ReactElement {
         >
           <p className={'font-number px-2 text-center text-neutral-900 '}>{'0.1%'}</p>
         </button>
+        <button
+          onClick={(): void => setMaxLoss(50n)}
+          className={`flex h-10 items-center rounded-lg border bg-neutral-100 px-1.5 py-2 ${
+            maxLoss === 50n ? 'border-neutral-900/40' : 'border-transparent'
+          }`}
+        >
+          <p className={'font-number px-2 text-center text-neutral-900 '}>{'0.5%'}</p>
+        </button>
         <div
           className={`flex h-10 w-full min-w-[72px] items-center rounded-lg border bg-neutral-100 px-0 py-4 ${
-            maxLoss !== 5n && maxLoss !== 10n ? 'border-neutral-900/40' : 'border-transparent'
+            maxLoss !== 10n && maxLoss !== 50n ? 'border-neutral-900/40' : 'border-transparent'
           }`}
         >
           <input
