@@ -262,7 +262,7 @@ function VaultAPY({
  *************************************************************************************************/
 function TVLInVault(props: { tokenSymbol: string; tvl: number; totalAssets: bigint; decimals: number }): ReactElement {
   return (
-    <VaultHeaderLineItem label={`Total deposited, ${props.tokenSymbol || 'tokens'}`} legend={formatUSD(props.tvl)}>
+    <VaultHeaderLineItem label={`TVL (${props.tokenSymbol || 'tokens'})`} legend={formatUSD(props.tvl)}>
       <Counter
         value={toNormalizedBN(props.totalAssets, props.decimals).normalized}
         decimals={props.decimals}
@@ -283,7 +283,7 @@ function ValueInVaultAsToken(props: {
 }): ReactElement {
   return (
     <VaultHeaderLineItem
-      label={`Value in ${props.currentVault.token.symbol || 'tokens'}`}
+      label={`Your value (${props.currentVault.token.symbol || 'tokens'})`}
       legend={
         <span className={'tooltip'}>
           <div className={'flex flex-row items-center space-x-2'}>
