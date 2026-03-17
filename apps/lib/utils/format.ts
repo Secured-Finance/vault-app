@@ -33,13 +33,7 @@ export const toBigInt = (amount?: TNumberish): bigint => {
 }
 
 export function toBigNumberAsAmount(bnAmount = 0n, decimals = 18, decimalsToDisplay = 2, symbol = ''): string {
-  let locale = 'en-US'
-  if (typeof navigator !== 'undefined') {
-    locale = navigator.language || 'fr-FR'
-  }
-  const locales = []
-  locales.push('en-US')
-  locales.push(locale)
+  const locale = 'en-US'
 
   let symbolWithPrefix = symbol
   if (symbol.length > 0 && symbol !== '%') {
@@ -54,7 +48,7 @@ export function toBigNumberAsAmount(bnAmount = 0n, decimals = 18, decimalsToDisp
   }
 
   const formatedAmount = formatUnits(bnAmount, decimals)
-  return `${new Intl.NumberFormat([locale, 'en-US'], {
+  return `${new Intl.NumberFormat(locale, {
     minimumFractionDigits: 0,
     maximumFractionDigits: decimalsToDisplay
   }).format(Number(formatedAmount))}${symbolWithPrefix}`
@@ -188,7 +182,7 @@ function formatCurrencyWithPrecision({
   locale,
   symbol
 }: TFormatCurrencyWithPrecision): string {
-  return new Intl.NumberFormat([locale, 'en-US'], {
+  return new Intl.NumberFormat(locale, {
     ...intlOptions,
     maximumFractionDigits: Math.max(maxFractionDigits, intlOptions.maximumFractionDigits || maxFractionDigits)
   })
@@ -199,20 +193,12 @@ function formatCurrencyWithPrecision({
 export function formatLocalAmount(amount: number, decimals: number, symbol: string, options: TAmountOptions): string {
   /**********************************************************************************************
    ** Define the normalized elements.
-   ** We use a few tricks here to get the benefits of the intl package and correct formating no
-   ** matter the provided local.
-   ** - Fallback formatting is set to `fr-FR`
-   ** - If symbol is USD, then we will display as `123,79 $` or `$123.79` (US)
-   ** - If smbol is percent, then we will display as `12 %` or `12%` (US)
-   ** - If symbol is any other token, we will display as `123,79 USDC` or `USDC 123.79` (US)
+   ** All formatting uses English-style conventions (decimal points, K/M/B abbreviations).
+   ** - If symbol is USD, then we will display as `$123.79`
+   ** - If symbol is percent, then we will display as `12%`
+   ** - If symbol is any other token, we will display as `123.79 USDC`
    **********************************************************************************************/
-  let locale = 'en-US'
-  if (typeof navigator !== 'undefined') {
-    locale = navigator.language || 'fr-FR'
-  }
-  const locales = []
-  locales.push('en-US')
-  locales.push(locale)
+  const locale = 'en-US'
 
   const { shouldDisplaySymbol, shouldCompactValue, ...rest } = options
   const intlOptions: Intl.NumberFormatOptions = rest
@@ -227,16 +213,16 @@ export function formatLocalAmount(amount: number, decimals: number, symbol: stri
   }
 
   if (isPercent && amount > 5 && shouldCompactValue) {
-    return `> ${new Intl.NumberFormat([locale, 'en-US'], intlOptions).format(5).replace('EUR', symbol)}`
+    return `> ${new Intl.NumberFormat(locale, intlOptions).format(5).replace('EUR', symbol)}`
   }
 
   /**********************************************************************************************
    ** If the amount is above 10k, we will format it to short notation:
-   ** - 123947 would be `123,95 k` or  `123.95K` (US)
-   ** - 267839372 would be `267,84 M` or  `267.84M` (US)
+   ** - 123947 would be `123.95K`
+   ** - 267839372 would be `267.84M`
    **********************************************************************************************/
   if (amount > 10_000 && shouldCompactValue) {
-    return new Intl.NumberFormat([locale, 'en-US'], {
+    return new Intl.NumberFormat(locale, {
       ...intlOptions,
       notation: 'compact',
       compactDisplay: 'short'
@@ -285,7 +271,7 @@ export function formatLocalAmount(amount: number, decimals: number, symbol: stri
       symbol
     })
   }
-  return new Intl.NumberFormat([locale, 'en-US'], intlOptions).format(amount).replace('EUR', symbol)
+  return new Intl.NumberFormat(locale, intlOptions).format(amount).replace('EUR', symbol)
 }
 
 export function formatTAmount(props: TAmount): string {
@@ -317,20 +303,11 @@ export function formatAmount(
   minimumFractionDigits = 2,
   maximumFractionDigits = 2,
   displayDigits = 0,
-  options?: {
+  _options?: {
     locales?: string[]
   }
 ): string {
-  let locale = 'en-US'
-  if (typeof navigator !== 'undefined') {
-    locale = navigator.language || 'fr-FR'
-  }
-  const locales = []
-  if (options?.locales) {
-    locales.push(...options.locales)
-  }
-  locales.push('en-US')
-  locales.push(locale)
+  const locale = 'en-US'
   if (maximumFractionDigits < minimumFractionDigits) {
     maximumFractionDigits = minimumFractionDigits
   }
@@ -343,7 +320,7 @@ export function formatAmount(
   if (Number.isNaN(amount)) {
     amount = 0
   }
-  let formattedAmount = new Intl.NumberFormat(locales, {
+  let formattedAmount = new Intl.NumberFormat(locale, {
     minimumFractionDigits,
     maximumFractionDigits
   }).format(amount)
@@ -357,24 +334,10 @@ export function formatAmount(
   return formattedAmount
 }
 
-export function parseAmount(stringNumber: string, providedLocales?: string[]): number {
-  let locale = 'en-US'
-  if (typeof navigator !== 'undefined') {
-    locale = navigator.language || 'fr-FR'
-  }
-  const locales = []
-  if (providedLocales) {
-    locales.push(...providedLocales)
-  }
-  locales.push('en-US')
-  locales.push(locale)
-
-  const thousandSeparator = Intl.NumberFormat(locales)
-    .format(11111)
-    .replace(/\p{Number}/gu, '')
-  const decimalSeparator = Intl.NumberFormat(locales)
-    .format(1.1)
-    .replace(/\p{Number}/gu, '')
+export function parseAmount(stringNumber: string, _providedLocales?: string[]): number {
+  // Always use English format: comma as thousand separator, period as decimal separator
+  const thousandSeparator = ','
+  const decimalSeparator = '.'
 
   return parseFloat(
     stringNumber
@@ -384,11 +347,8 @@ export function parseAmount(stringNumber: string, providedLocales?: string[]): n
 }
 
 export function formatCurrency(amount: number, decimals = 2): string {
-  let locale = 'fr-FR'
-  if (typeof navigator !== 'undefined') {
-    locale = navigator.language || 'fr-FR'
-  }
-  return new Intl.NumberFormat([locale, 'en-US'], {
+  const locale = 'en-US'
+  return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: 'USD',
     currencyDisplay: 'symbol',
@@ -401,18 +361,15 @@ export function formatWithUnit(
   amount: number,
   minimumFractionDigits = 2,
   maximumFractionDigits = 2,
-  options?: {
+  _options?: {
     locales?: string[]
   }
 ): string {
-  let locale = 'fr-FR'
-  if (typeof navigator !== 'undefined') {
-    locale = navigator.language || 'fr-FR'
-  }
+  const locale = 'en-US'
   if (maximumFractionDigits < minimumFractionDigits) {
     maximumFractionDigits = minimumFractionDigits
   }
-  return new Intl.NumberFormat(options?.locales || [locale, 'en-US'], {
+  return new Intl.NumberFormat(locale, {
     minimumFractionDigits,
     maximumFractionDigits,
     notation: 'compact',
