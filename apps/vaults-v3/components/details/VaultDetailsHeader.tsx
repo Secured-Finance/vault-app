@@ -136,7 +136,7 @@ function VaultAPY({
           <span className={'tooltip'}>
             <div className={'flex flex-row items-center space-x-2'}>
               <div>
-                {'Historical APY: '}
+                {'Hist. APY: '}
                 <RenderAmount value={isZero(monthlyAPY) ? weeklyAPY : monthlyAPY} symbol={'percent'} decimals={6} />
               </div>
               <IconQuestion className={'hidden md:block'} />
@@ -173,7 +173,7 @@ function VaultAPY({
         <span className={'tooltip'}>
           <div className={'flex flex-row items-center space-x-2'}>
             <div>
-              {'Historical APY: '}
+              {'Hist. APY: '}
               <RenderAmount value={isZero(monthlyAPY) ? weeklyAPY : monthlyAPY} symbol={'percent'} decimals={6} />
             </div>
             <IconQuestion className={'hidden md:block'} />
