@@ -213,7 +213,7 @@ export function formatLocalAmount(amount: number, decimals: number, symbol: stri
   }
 
   if (isPercent && amount > 5 && shouldCompactValue) {
-    return `> ${new Intl.NumberFormat(locale, intlOptions).format(5).replace('EUR', symbol)}`
+    return `>${new Intl.NumberFormat(locale, intlOptions).format(5).replace('EUR', symbol)}`
   }
 
   /**********************************************************************************************
