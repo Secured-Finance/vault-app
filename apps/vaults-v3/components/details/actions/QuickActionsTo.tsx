@@ -258,8 +258,9 @@ export function VaultDetailsQuickActionsTo(props: {
                   'overflow-x-scroll border-none outline-hidden scrollbar-none'
                 )}
                 type={'text'}
+                placeholder="0"
                 disabled
-                value={expectedOut?.normalized || 0}
+                value={expectedOut === undefined || expectedOut?.normalized === 0 ? '' : expectedOut.normalized}
                 autoComplete={'off'}
               />
             )}

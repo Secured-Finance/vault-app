@@ -131,13 +131,13 @@ function VaultAPY({
     const boostedAPY = (apyData.baseForwardApr || apr.forwardAPR.netAPR) + (apyData.rewardsAprSum || extraAPY)
     return (
       <VaultHeaderLineItem
-        label={'Historical APY'}
+        label={'Est. APY'}
         legend={
           <span className={'tooltip'}>
             <div className={'flex flex-row items-center space-x-2'}>
               <div>
-                {'Est. APY: '}
-                <RenderAmount shouldHideTooltip={boostedAPY === 0} value={boostedAPY} symbol={'percent'} decimals={6} />
+                {'Hist. APY: '}
+                <RenderAmount value={isZero(monthlyAPY) ? weeklyAPY : monthlyAPY} symbol={'percent'} decimals={6} />
               </div>
               <IconQuestion className={'hidden md:block'} />
             </div>
@@ -152,46 +152,15 @@ function VaultAPY({
                     'font-number flex w-full flex-row justify-between text-wrap text-left text-neutral-400 md:w-80 md:text-xs'
                   }
                 >
-                  {'Estimated APY for the next period based on current data.'}
+                  {'Annualized yield based on the change in Price Per Share between 7 days ago and now.'}
                 </p>
-                <div
-                  className={
-                    'font-number flex w-full flex-row justify-between space-x-4 whitespace-nowrap py-1 text-neutral-400 md:text-xs'
-                  }
-                >
-                  <p>{'• Base APY '}</p>
-                  <span className={'font-number'}>
-                    <RenderAmount
-                      shouldHideTooltip
-                      value={apyData.baseForwardApr || apr.forwardAPR.netAPR}
-                      symbol={'percent'}
-                      decimals={6}
-                    />
-                  </span>
-                </div>
-
-                <div
-                  className={
-                    'font-number flex w-full flex-row justify-between space-x-4 whitespace-nowrap text-neutral-400 md:text-xs'
-                  }
-                >
-                  <p>{'• Rewards APY '}</p>
-                  <span className={'font-number'}>
-                    <RenderAmount
-                      shouldHideTooltip
-                      value={apyData.rewardsAprSum || extraAPY}
-                      symbol={'percent'}
-                      decimals={6}
-                    />
-                  </span>
-                </div>
               </div>
             </span>
           </span>
         }
       >
         <Renderable shouldRender={!apr?.type.includes('new')} fallback={'New'}>
-          <RenderAmount value={isZero(monthlyAPY) ? weeklyAPY : monthlyAPY} symbol={'percent'} decimals={6} />
+          <RenderAmount shouldHideTooltip={boostedAPY === 0} value={boostedAPY} symbol={'percent'} decimals={6} />
         </Renderable>
       </VaultHeaderLineItem>
     )
@@ -199,13 +168,13 @@ function VaultAPY({
 
   return (
     <VaultHeaderLineItem
-      label={'Historical APY'}
+      label={'Est. APY'}
       legend={
         <span className={'tooltip'}>
           <div className={'flex flex-row items-center space-x-2'}>
             <div>
-              {'Est. APY: '}
-              <RenderAmount value={isZero(currentAPY) ? netAPY : currentAPY} symbol={'percent'} decimals={6} />
+              {'Hist. APY: '}
+              <RenderAmount value={isZero(monthlyAPY) ? weeklyAPY : monthlyAPY} symbol={'percent'} decimals={6} />
             </div>
             <IconQuestion className={'hidden md:block'} />
           </div>
@@ -220,37 +189,15 @@ function VaultAPY({
                   'font-number flex w-full flex-row justify-between text-wrap text-left text-neutral-400 md:w-80 md:text-xs'
                 }
               >
-                {'Estimated APY for the next period based on current data.'}
+                {'Annualized yield based on the change in Price Per Share between 7 days ago and now.'}
               </p>
-              <div
-                className={
-                  'font-number flex w-full flex-row justify-between space-x-4 whitespace-nowrap py-1 text-neutral-400 md:text-xs'
-                }
-              >
-                <p>{'• Base APY '}</p>
-                <RenderAmount
-                  shouldHideTooltip
-                  value={isZero(currentAPY) ? netAPY : currentAPY}
-                  symbol={'percent'}
-                  decimals={6}
-                />
-              </div>
-
-              <div
-                className={
-                  'font-number flex w-full flex-row justify-between space-x-4 whitespace-nowrap text-neutral-400 md:text-xs'
-                }
-              >
-                <p>{'• Rewards APY '}</p>
-                <p>{'N/A'}</p>
-              </div>
             </div>
           </span>
         </span>
       }
     >
       <Renderable shouldRender={!apr?.type.includes('new')} fallback={'New'}>
-        <RenderAmount value={isZero(monthlyAPY) ? weeklyAPY : monthlyAPY} symbol={'percent'} decimals={6} />
+        <RenderAmount value={isZero(currentAPY) ? netAPY : currentAPY} symbol={'percent'} decimals={6} />
       </Renderable>
     </VaultHeaderLineItem>
   )
@@ -262,7 +209,7 @@ function VaultAPY({
  *************************************************************************************************/
 function TVLInVault(props: { tokenSymbol: string; tvl: number; totalAssets: bigint; decimals: number }): ReactElement {
   return (
-    <VaultHeaderLineItem label={`Total deposited, ${props.tokenSymbol || 'tokens'}`} legend={formatUSD(props.tvl)}>
+    <VaultHeaderLineItem label={`TVL (${props.tokenSymbol || 'tokens'})`} legend={formatUSD(props.tvl)}>
       <Counter
         value={toNormalizedBN(props.totalAssets, props.decimals).normalized}
         decimals={props.decimals}
@@ -283,7 +230,7 @@ function ValueInVaultAsToken(props: {
 }): ReactElement {
   return (
     <VaultHeaderLineItem
-      label={`Value in ${props.currentVault.token.symbol || 'tokens'}`}
+      label={`Your value (${props.currentVault.token.symbol || 'tokens'})`}
       legend={
         <span className={'tooltip'}>
           <div className={'flex flex-row items-center space-x-2'}>
@@ -375,7 +322,7 @@ export function VaultDetailsHeader({ currentVault }: { currentVault: TYDaemonVau
   const { address } = useWeb3()
   const { getPrice } = useYearn()
   const { data: blockNumber } = useBlockNumber({ watch: true })
-  const { apr, tvl, decimals, symbol = 'token' } = currentVault
+  const { apr, tvl, decimals } = currentVault
   const [vaultData, setVaultData] = useState({
     deposited: zeroNormalizedBN,
     valueInToken: zeroNormalizedBN,
@@ -702,7 +649,12 @@ export function VaultDetailsHeader({ currentVault }: { currentVault: TYDaemonVau
         )}
       >
         <div className={'w-full'}>
-          <TVLInVault tokenSymbol={symbol} tvl={tvl.tvl} totalAssets={tvl.totalAssets} decimals={decimals} />
+          <TVLInVault
+            tokenSymbol={currentVault.token.symbol}
+            tvl={tvl.tvl}
+            totalAssets={tvl.totalAssets}
+            decimals={decimals}
+          />
         </div>
 
         <div className={'w-full'}>
