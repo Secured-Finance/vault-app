@@ -322,7 +322,7 @@ export function VaultDetailsHeader({ currentVault }: { currentVault: TYDaemonVau
   const { address } = useWeb3()
   const { getPrice } = useYearn()
   const { data: blockNumber } = useBlockNumber({ watch: true })
-  const { apr, tvl, decimals, symbol = 'token' } = currentVault
+  const { apr, tvl, decimals } = currentVault
   const [vaultData, setVaultData] = useState({
     deposited: zeroNormalizedBN,
     valueInToken: zeroNormalizedBN,
@@ -649,7 +649,12 @@ export function VaultDetailsHeader({ currentVault }: { currentVault: TYDaemonVau
         )}
       >
         <div className={'w-full'}>
-          <TVLInVault tokenSymbol={symbol} tvl={tvl.tvl} totalAssets={tvl.totalAssets} decimals={decimals} />
+          <TVLInVault
+            tokenSymbol={currentVault.token.symbol}
+            tvl={tvl.tvl}
+            totalAssets={tvl.totalAssets}
+            decimals={decimals}
+          />
         </div>
 
         <div className={'w-full'}>
