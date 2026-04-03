@@ -209,12 +209,20 @@ function VaultAPY({
  *************************************************************************************************/
 function TVLInVault(props: { tokenSymbol: string; tvl: number; totalAssets: bigint; decimals: number }): ReactElement {
   return (
-    <VaultHeaderLineItem label={`TVL (${props.tokenSymbol || 'tokens'})`} legend={formatUSD(props.tvl)}>
-      <Counter
-        value={toNormalizedBN(props.totalAssets, props.decimals).normalized}
-        decimals={props.decimals}
-        decimalsToDisplay={[2, 6, 8, 10, 12]}
-      />
+    <VaultHeaderLineItem
+      label={'TVL'}
+      legend={
+        <span>
+          <Counter
+            value={toNormalizedBN(props.totalAssets, props.decimals).normalized}
+            decimals={props.decimals}
+            decimalsToDisplay={[2, 6, 8, 10, 12]}
+          />{' '}
+          {props.tokenSymbol}
+        </span>
+      }
+    >
+      <span>{`${formatUSD(props.tvl)}`}</span>
     </VaultHeaderLineItem>
   )
 }
@@ -230,40 +238,43 @@ function ValueInVaultAsToken(props: {
 }): ReactElement {
   return (
     <VaultHeaderLineItem
-      label={`Your value (${props.currentVault.token.symbol || 'tokens'})`}
+      label={'Your Holdings'}
       legend={
-        <span className={'tooltip'}>
-          <div className={'flex flex-row items-center space-x-2'}>
-            <div>
-              {'$'}
-              <Counter
-                value={props.valueInToken.normalized * props.vaultPrice}
-                decimals={2}
-                decimalsToDisplay={[2, 4, 6, 8]}
-              />
-            </div>
-            <IconQuestion className={'hidden md:block'} />
-          </div>
-          <span className={'tooltipLight top-full mt-2'}>
-            <div
-              className={
-                '-mx-12 w-fit rounded-xl border border-neutral-300 bg-neutral-200 p-4 text-center text-xs text-neutral-900'
-              }
-            >
-              <p className={'flex w-full flex-row justify-between text-neutral-700 md:text-xs'}>
-                {'Your yield is accruing every single block. Go you!'}
-              </p>
-            </div>
-          </span>
+        <span>
+          <Counter
+            value={props.valueInToken.normalized}
+            decimals={props.currentVault.decimals}
+            idealDecimals={2}
+            decimalsToDisplay={[6, 8, 10, 12]}
+          />{' '}
+          {props.currentVault.token.symbol}
         </span>
       }
     >
-      <Counter
-        value={props.valueInToken.normalized}
-        decimals={props.currentVault.decimals}
-        idealDecimals={2}
-        decimalsToDisplay={[6, 8, 10, 12]}
-      />
+      <span className={'tooltip'}>
+        <div className={'flex flex-row items-center space-x-2'}>
+          <div>
+            {'$'}
+            <Counter
+              value={props.valueInToken.normalized * props.vaultPrice}
+              decimals={2}
+              decimalsToDisplay={[2, 4, 6, 8]}
+            />
+          </div>
+          <IconQuestion className={'hidden md:block'} />
+        </div>
+        <span className={'tooltipLight top-full mt-2'}>
+          <div
+            className={
+              '-mx-12 w-fit rounded-xl border border-neutral-300 bg-neutral-200 p-4 text-center text-xs text-neutral-900'
+            }
+          >
+            <p className={'flex w-full flex-row justify-between text-neutral-700 md:text-xs'}>
+              {'Your yield is accruing every single block. Go you!'}
+            </p>
+          </div>
+        </span>
+      </span>
     </VaultHeaderLineItem>
   )
 }
