@@ -131,7 +131,7 @@ function VaultAPY({
     const boostedAPY = (apyData.baseForwardApr || apr.forwardAPR.netAPR) + (apyData.rewardsAprSum || extraAPY)
     return (
       <VaultHeaderLineItem
-        label={'Est. APY'}
+        label={'Estimated APY'}
         legend={
           <span className={'tooltip'}>
             <div className={'flex flex-row items-center space-x-2'}>
@@ -168,7 +168,7 @@ function VaultAPY({
 
   return (
     <VaultHeaderLineItem
-      label={'Est. APY'}
+      label={'Estimated APY'}
       legend={
         <span className={'tooltip'}>
           <div className={'flex flex-row items-center space-x-2'}>
