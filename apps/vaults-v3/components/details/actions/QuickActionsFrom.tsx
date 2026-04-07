@@ -246,10 +246,15 @@ export function VaultDetailsQuickActionsFrom(props: {
               type={'number'}
               inputMode={'numeric'}
               min={0}
+              placeholder="0"
               pattern={'^((?:0|[1-9]+)(?:.(?:d+?[1-9]|[1-9]))?)$'}
               autoComplete={'off'}
               disabled={!isActive}
-              value={actionParams?.amount === undefined ? '' : actionParams?.amount.normalized}
+              value={
+                actionParams?.amount === undefined || actionParams?.amount.normalized === 0
+                  ? ''
+                  : actionParams?.amount.normalized
+              }
               onChange={onChangeInput}
             />
             <button

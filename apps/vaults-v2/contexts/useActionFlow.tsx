@@ -954,7 +954,10 @@ export function ActionFlowContextApp(props: { children: ReactNode; currentVault:
 
     externalzapOutTokenList
       .filter((): boolean => props.currentVault.chainID === props.currentVault?.chainID) // Disable if we are on the wrong chain
-      .filter((token): boolean => token.chainID === (props.currentVault?.chainID || props.currentVault.chainID))
+      .filter(
+        (token): boolean =>
+          token.chainID === (props.currentVault?.chainID || props.currentVault.chainID) && token.enabled
+      )
       .forEach((tokenListData): void => {
         _possibleZapOptionsTo.push(
           setZapOption({

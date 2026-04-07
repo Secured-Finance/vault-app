@@ -430,7 +430,7 @@ function ListOfVaults(): ReactElement {
               className: 'col-span-2'
             },
             {
-              label: 'Deposits',
+              label: 'TVL',
               value: 'tvl',
               sortable: true,
               className: 'col-span-2 justify-end'
