@@ -54,7 +54,7 @@ export function VaultStakedAmount({ currentVault }: { currentVault: TYDaemonVaul
           decimals={currentVault.token.decimals}
           options={{ shouldDisplaySymbol: false, maximumFractionDigits: 4 }}
         />
-        <p className="pl-1">{currentVault.token.symbol}</p>
+        <p className="pl-1">{currentVault.symbol}</p>
       </small>
     </div>
   )
