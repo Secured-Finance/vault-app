@@ -18,7 +18,7 @@ function useFetchYearnEarnedForUser(): TYDaemonEarned {
   const { data: earned } = useFetch<TYDaemonEarned>({
     endpoint: address
       ? `${yDaemonBaseUriWithoutChain}/earned/${address}?${new URLSearchParams({
-          chainIDs: [1, 10].join(',')
+          chainIDs: [1, 314159].join(',')
         })}`
       : null,
     schema: yDaemonEarnedSchema
