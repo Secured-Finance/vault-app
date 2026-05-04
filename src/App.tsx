@@ -17,8 +17,10 @@ import { AppSettingsContextApp } from '@vaults-v2/contexts/useAppSettings'
 import type { ReactElement } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { useLocation } from 'react-router'
+import GoogleAnalyticsProvider from './components/GoogleAnalyticsProvider'
 import PlausibleProvider from './components/PlausibleProvider'
 import { AppRoutes } from './routes'
+import * as gtag from './utils/gtag'
 
 function WithLayout(): ReactElement {
   const location = useLocation()
@@ -93,23 +95,25 @@ function App(): ReactElement {
       />
       <WithFonts>
         <main className={'font-aeonik size-full min-h-screen'}>
-          <PlausibleProvider domain={'yearn.fi'} enabled={true}>
-            <WithMom supportedChains={SUPPORTED_NETWORKS} tokenLists={[]}>
-              <AppSettingsContextApp>
-                <YearnContextApp>
-                  <WalletContextApp>
-                    <IndexedDB>
-                      <WithNotifications>
-                        <WithNotificationsActions>
-                          <WithLayout />
-                        </WithNotificationsActions>
-                      </WithNotifications>
-                    </IndexedDB>
-                  </WalletContextApp>
-                </YearnContextApp>
-              </AppSettingsContextApp>
-            </WithMom>
-          </PlausibleProvider>
+          <GoogleAnalyticsProvider trackingId={gtag.getGoogleAnalyticsTag()}>
+            <PlausibleProvider domain={'yearn.fi'} enabled={true}>
+              <WithMom supportedChains={SUPPORTED_NETWORKS} tokenLists={[]}>
+                <AppSettingsContextApp>
+                  <YearnContextApp>
+                    <WalletContextApp>
+                      <IndexedDB>
+                        <WithNotifications>
+                          <WithNotificationsActions>
+                            <WithLayout />
+                          </WithNotificationsActions>
+                        </WithNotifications>
+                      </IndexedDB>
+                    </WalletContextApp>
+                  </YearnContextApp>
+                </AppSettingsContextApp>
+              </WithMom>
+            </PlausibleProvider>
+          </GoogleAnalyticsProvider>
           <Toaster
             toastOptions={{
               duration: 5000,
