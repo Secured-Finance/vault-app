@@ -20,7 +20,6 @@ import { useLocation } from 'react-router'
 import GoogleAnalyticsProvider from './components/GoogleAnalyticsProvider'
 import PlausibleProvider from './components/PlausibleProvider'
 import { AppRoutes } from './routes'
-import * as gtag from './utils/gtag'
 
 function WithLayout(): ReactElement {
   const location = useLocation()
@@ -95,7 +94,7 @@ function App(): ReactElement {
       />
       <WithFonts>
         <main className={'font-aeonik size-full min-h-screen'}>
-          <GoogleAnalyticsProvider trackingId={gtag.getGoogleAnalyticsTag()}>
+          <GoogleAnalyticsProvider>
             <PlausibleProvider domain={'yearn.fi'} enabled={true}>
               <WithMom supportedChains={SUPPORTED_NETWORKS} tokenLists={[]}>
                 <AppSettingsContextApp>
