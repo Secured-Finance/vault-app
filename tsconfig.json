@@ -57,7 +57,6 @@
     "vite.config.ts",
     "vitest.config.ts",
     "worker/index.js",
-    "env.d.ts",
-    "global.d.ts"
+    "env.d.ts"
   ]
 }
