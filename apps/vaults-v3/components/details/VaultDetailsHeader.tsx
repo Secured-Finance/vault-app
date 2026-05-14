@@ -152,7 +152,7 @@ function VaultAPY({
                     'font-number flex w-full flex-row justify-between text-wrap text-left text-neutral-400 md:w-80 md:text-xs'
                   }
                 >
-                  {'Annualized yield based on the change in Price Per Share between 7 days ago and now.'}
+                  {'Annualized yield based on the change in Price Per Share between 30 days ago and now.'}
                 </p>
               </div>
             </span>
@@ -189,7 +189,7 @@ function VaultAPY({
                   'font-number flex w-full flex-row justify-between text-wrap text-left text-neutral-400 md:w-80 md:text-xs'
                 }
               >
-                {'Annualized yield based on the change in Price Per Share between 7 days ago and now.'}
+                {'Annualized yield based on the change in Price Per Share between 30 days ago and now.'}
               </p>
             </div>
           </span>
