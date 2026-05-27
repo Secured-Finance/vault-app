@@ -38,6 +38,8 @@ async function fetchVaultData(chainId: string, address: string): Promise<VaultDa
     process.env.YDAEMON_BASE_URI || process.env.VITE_YDAEMON_BASE_URI || 'https://vault-api.secured.finance'
   const url = `${baseUri}/${chainId}/vaults/${address}`
 
+  console.log(`[meta.ts] Fetching vault data from: ${url}`)
+
   try {
     const response = await fetch(url, {
       headers: {
@@ -45,15 +47,32 @@ async function fetchVaultData(chainId: string, address: string): Promise<VaultDa
       }
     })
 
+    console.log(`[meta.ts] API Response Status: ${response.status}`)
+
     if (!response.ok) {
-      console.error(`Failed to fetch vault data: ${response.status}`)
+      const errorText = await response.text()
+      console.error(`[meta.ts] Failed to fetch vault data:`, {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorText,
+        url
+      })
       return null
     }
 
-    const data = await response.json()
-    return data as VaultData
+    const data = (await response.json()) as VaultData
+    console.log(`[meta.ts] Successfully fetched vault data:`, {
+      name: data.name,
+      symbol: data.symbol,
+      tokenName: data.token?.name,
+      chainID: data.chainID
+    })
+    return data
   } catch (error) {
-    console.error('Error fetching vault data:', error)
+    console.error(`[meta.ts] Error fetching vault data:`, {
+      error: error instanceof Error ? error.message : String(error),
+      url
+    })
     return null
   }
 }
@@ -61,7 +80,10 @@ async function fetchVaultData(chainId: string, address: string): Promise<VaultDa
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { chainId, address } = req.query
 
+  console.log(`[meta.ts] Request received - chainId: ${chainId}, address: ${address}`)
+
   if (!chainId || !address || typeof chainId !== 'string' || typeof address !== 'string') {
+    console.error('[meta.ts] Invalid parameters:', { chainId, address })
     return res.status(400).json({ error: 'Missing or invalid chainId or address' })
   }
 
@@ -73,7 +95,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const host = req.headers['x-forwarded-host'] || req.headers.host || 'vaults.secured.finance'
     const baseUrl = `${protocol}://${host}`
 
-    console.log('baseUrl:', baseUrl)
+    console.log(`[meta.ts] Base URL: ${baseUrl}`)
 
     // Fetch vault data
     const vaultData = await fetchVaultData(chainId, address)
@@ -88,15 +110,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (vaultData) {
       // Dynamic title and description based on vault data
       const vaultName = getVaultName(vaultData)
-      const assetName = vaultData.token.name || vaultData.token.symbol
+      const assetName = vaultData.token.symbol || vaultData.token.name
 
       title = `${vaultName} | SF Yield Vault | Secured Finance`
       description = `${vaultName} is designed to provide access to yield opportunities on ${assetName} through on-chain strategies with a simple deposit experience.`
+
+      console.log(`[meta.ts] Generated dynamic meta:`, {
+        vaultName,
+        assetName,
+        title,
+        description: description.substring(0, 100) + '...'
+      })
     } else {
       // Fallback for when vault data can't be fetched
       title = 'SF Yield Vault | Secured Finance'
       description =
         "SF Yield Vault is Secured Finance's on-chain yield strategy product, designed to help users access yield opportunities through vaults with a simple deposit experience."
+
+      console.warn('[meta.ts] Using fallback meta tags (vault data not found)')
     }
 
     // Inject meta tags
