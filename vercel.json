@@ -6,6 +6,9 @@
     "api/og.tsx": {
       "maxDuration": 60,
       "includeFiles": "api/package.json"
+    },
+    "api/vault/meta.ts": {
+      "maxDuration": 30
     }
   },
   "redirects": [

@@ -64,6 +64,7 @@ function App(): ReactElement {
   // Get most basic og and uri info
   let ogUrl = manifest.og || 'https://vaults.secured.finance/og.png'
   let pageUri = manifest.uri || 'https://vaults.secured.finance'
+  let isVaultDetailPage = false
 
   const ogBaseUrl = 'https://og.yearn.fi'
 
@@ -74,12 +75,14 @@ function App(): ReactElement {
     const [, , chainID, address] = asPath.split('/')
     ogUrl = `${ogBaseUrl}/api/og/yearn/vault/${chainID}/${address}`
     pageUri = `https://vaults.secured.finance${asPath}`
+    isVaultDetailPage = true
   }
   if (asPath.startsWith('/vaults/') && asPath.split('/').length === 4) {
     // Use dynamic OG API for v2 vault pages: /vaults/[chainID]/[address]
     const [, , chainID, address] = asPath.split('/')
     ogUrl = `${ogBaseUrl}/api/og/yearn/vault/${chainID}/${address}`
     pageUri = `https://vaults.secured.finance${asPath}`
+    isVaultDetailPage = true
   }
 
   return (
@@ -91,6 +94,7 @@ function App(): ReactElement {
         themeColor={'#000000'}
         og={ogUrl}
         uri={pageUri}
+        preserveServerTitle={isVaultDetailPage}
       />
       <WithFonts>
         <main className={'font-aeonik size-full min-h-screen'}>
