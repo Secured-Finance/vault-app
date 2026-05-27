@@ -6,6 +6,58 @@ import { join } from 'path'
 const indexPath = join(process.cwd(), 'dist', 'index.html')
 const baseHtml = readFileSync(indexPath, 'utf-8')
 
+interface VaultData {
+  name: string
+  symbol: string
+  token: {
+    name: string
+    symbol: string
+  }
+  apr: {
+    netAPR: number
+    forwardAPR: {
+      netAPR: number
+    }
+  }
+  tvl: {
+    tvl: number
+  }
+  chainID: number
+}
+
+function getVaultName(vaultData: VaultData): string {
+  const baseName = vaultData.name
+  if (baseName.includes(' yVault')) {
+    return baseName.replace(' yVault', '')
+  }
+  return baseName
+}
+
+async function fetchVaultData(chainId: string, address: string): Promise<VaultData | null> {
+  const baseUri =
+    process.env.YDAEMON_BASE_URI || process.env.VITE_YDAEMON_BASE_URI || 'https://vault-api.secured.finance'
+  const url = `${baseUri}/${chainId}/vaults/${address}`
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        Accept: 'application/json'
+      }
+    })
+
+    if (!response.ok) {
+      console.error(`Failed to fetch vault data: ${response.status}`)
+      return null
+    }
+
+    const data = await response.json()
+    return data as VaultData
+  } catch (error) {
+    console.error('Error fetching vault data:', error)
+    return null
+  }
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { chainId, address } = req.query
 
@@ -23,31 +75,48 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     console.log('baseUrl:', baseUrl)
 
+    // Fetch vault data
+    const vaultData = await fetchVaultData(chainId, address)
+
     // Generate dynamic meta tags
     const ogImageUrl = `${baseUrl}/api/og?chainId=${chainId}&address=${address}`
     const canonicalUrl = `${baseUrl}/${chainId}/${address}`
 
-    const title = 'Secured Finance Vault'
-    const description = "Earn yield on your crypto with Secured Finance's automated vault strategies"
+    let title: string
+    let description: string
+
+    if (vaultData) {
+      // Dynamic title and description based on vault data
+      const vaultName = getVaultName(vaultData)
+      const assetName = vaultData.token.name || vaultData.token.symbol
+
+      title = `${vaultName} | SF Yield Vault | Secured Finance`
+      description = `${vaultName} is designed to provide access to yield opportunities on ${assetName} through on-chain strategies with a simple deposit experience.`
+    } else {
+      // Fallback for when vault data can't be fetched
+      title = 'SF Yield Vault | Secured Finance'
+      description =
+        "SF Yield Vault is Secured Finance's on-chain yield strategy product, designed to help users access yield opportunities through vaults with a simple deposit experience."
+    }
 
     // Inject meta tags
     const metaTags = `
     <title>${title}</title>
     <meta name="description" content="${description}" />
-    
+
     <!-- Open Graph -->
     <meta property="og:title" content="${title}" />
     <meta property="og:description" content="${description}" />
     <meta property="og:image" content="${ogImageUrl}" />
     <meta property="og:url" content="${canonicalUrl}" />
     <meta property="og:type" content="website" />
-    
+
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${title}" />
     <meta name="twitter:description" content="${description}" />
     <meta name="twitter:image" content="${ogImageUrl}" />
-    
+
     <!-- Additional SEO -->
     <link rel="canonical" href="${canonicalUrl}" />
     `

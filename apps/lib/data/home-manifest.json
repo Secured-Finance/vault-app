@@ -1,7 +1,7 @@
 {
-  "name": "Yearn",
-  "short_name": "Yearn",
-  "description": "The yield protocol for digital assets",
+  "name": "SF Yield Vault: On-Chain Yield Strategy | Secured Finance",
+  "short_name": "SF Yield Vault",
+  "description": "SF Yield Vault is Secured Finance's on-chain yield strategy product, designed to help users access yield opportunities through vaults with a simple deposit experience.",
   "iconPath": "./favicons/favicon.svg",
   "locale": "en-US",
   "uri": "https://yearn.fi/",
