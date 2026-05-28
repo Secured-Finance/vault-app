@@ -51,7 +51,7 @@ async function fetchVaultData(chainId: string, address: string): Promise<VaultDa
 
     const data = (await response.json()) as VaultData
     return data
-  } catch (error) {
+  } catch (_error) {
     return null
   }
 }
