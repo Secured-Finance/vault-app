@@ -3,11 +3,11 @@ import { useWallet } from '@lib/contexts/useWallet'
 import { useWeb3 } from '@lib/contexts/useWeb3'
 import type { TUseBalancesTokens } from '@lib/hooks/useBalances.multichains'
 import { useFetch } from '@lib/hooks/useFetch'
+import { useVaultMeta } from '@lib/hooks/useVaultMeta'
 import { useYDaemonBaseURI } from '@lib/hooks/useYDaemonBaseURI'
 import { toAddress } from '@lib/utils'
 import { variants } from '@lib/utils/animations'
-import type { TYDaemonVault } from '@lib/utils/schemas/yDaemonVaultsSchemas'
-import { yDaemonVaultSchema } from '@lib/utils/schemas/yDaemonVaultsSchemas'
+import { type TYDaemonVault, yDaemonVaultSchema } from '@lib/utils/schemas/yDaemonVaultsSchemas'
 import { VaultDetailsTabsWrapper } from '@vaults-v2/components/details/tabs/VaultDetailsTabsWrapper'
 import { VaultActionsTabsWrapper } from '@vaults-v2/components/details/VaultActionsTabsWrapper'
 import { ActionFlowContextApp } from '@vaults-v2/contexts/useActionFlow'
@@ -21,6 +21,9 @@ import { useParams } from 'react-router'
 function Index(): ReactElement | null {
   const { address, isActive } = useWeb3()
   const params = useParams()
+
+  // Update document title with vault-specific name
+  useVaultMeta()
 
   const { onRefresh } = useWallet()
   const { yDaemonBaseUri } = useYDaemonBaseURI({ chainID: Number(params.chainID) })

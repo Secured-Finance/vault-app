@@ -3,6 +3,7 @@ import { useWallet } from '@lib/contexts/useWallet'
 import { useWeb3 } from '@lib/contexts/useWeb3'
 import type { TUseBalancesTokens } from '@lib/hooks/useBalances.multichains'
 import { useFetch } from '@lib/hooks/useFetch'
+import { useVaultMeta } from '@lib/hooks/useVaultMeta'
 import { useYDaemonBaseURI } from '@lib/hooks/useYDaemonBaseURI'
 import { cl, toAddress } from '@lib/utils'
 import type { TYDaemonVault } from '@lib/utils/schemas/yDaemonVaultsSchemas'
@@ -22,6 +23,9 @@ function Index(): ReactElement | null {
   const { address, isActive } = useWeb3()
   const params = useParams()
   const { onRefresh } = useWallet()
+
+  // Update document title with vault-specific name
+  useVaultMeta()
   const { yDaemonBaseUri } = useYDaemonBaseURI({
     chainID: Number(params.chainID)
   })
