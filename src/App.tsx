@@ -2,6 +2,7 @@ import AppHeader from '@lib/components/Header'
 import { Meta } from '@lib/components/Meta'
 import { WithFonts } from '@lib/components/WithFonts'
 import { IndexedDB } from '@lib/contexts/useIndexedDB'
+import { MetaOverrideProvider, useMetaOverride } from '@lib/contexts/useMetaOverride'
 import { WithNotifications } from '@lib/contexts/useNotifications'
 import { WithNotificationsActions } from '@lib/contexts/useNotificationsActions'
 import { WalletContextApp } from '@lib/contexts/useWallet'
@@ -54,44 +55,48 @@ function WithLayout(): ReactElement {
   )
 }
 
-function App(): ReactElement {
+function AppMeta(): ReactElement {
   const location = useLocation()
   const { manifest } = useCurrentApp()
+  const { title: overrideTitle, description: overrideDescription } = useMetaOverride()
 
-  // Determine dynamic meta for V3 vault detail pages
   const asPath = location.pathname
+  const ogBaseUrl = 'https://og.yearn.fi'
 
-  // Get most basic og and uri info
   let ogUrl = manifest.og || 'https://vaults.secured.finance/og.png'
   let pageUri = manifest.uri || 'https://vaults.secured.finance'
 
-  const ogBaseUrl = 'https://og.yearn.fi'
-
   if (asPath.split('/').length === 3) {
-    // Default to production
-
-    // Use dynamic OG API for V3 vault pages: /[chainID]/[address]
     const [, , chainID, address] = asPath.split('/')
     ogUrl = `${ogBaseUrl}/api/og/yearn/vault/${chainID}/${address}`
     pageUri = `https://vaults.secured.finance${asPath}`
   }
   if (asPath.startsWith('/vaults/') && asPath.split('/').length === 4) {
-    // Use dynamic OG API for v2 vault pages: /vaults/[chainID]/[address]
     const [, , chainID, address] = asPath.split('/')
     ogUrl = `${ogBaseUrl}/api/og/yearn/vault/${chainID}/${address}`
     pageUri = `https://vaults.secured.finance${asPath}`
   }
 
   return (
-    <>
-      <Meta
-        title={manifest.name || 'Secured Finance'}
-        description={manifest.description || 'The yield protocol for digital assets'}
-        titleColor={'#ffffff'}
-        themeColor={'#000000'}
-        og={ogUrl}
-        uri={pageUri}
-      />
+    <Meta
+      title={overrideTitle || manifest.name || 'SF Yield Vault: On-Chain Yield Strategy | Secured Finance'}
+      description={
+        overrideDescription ||
+        manifest.description ||
+        "SF Yield Vault is Secured Finance's on-chain yield strategy product, designed to help users access yield opportunities through vaults with a simple deposit experience."
+      }
+      titleColor={'#ffffff'}
+      themeColor={'#000000'}
+      og={ogUrl}
+      uri={pageUri}
+    />
+  )
+}
+
+function App(): ReactElement {
+  return (
+    <MetaOverrideProvider>
+      <AppMeta />
       <WithFonts>
         <main className={'font-aeonik size-full min-h-screen'}>
           <GoogleAnalyticsProvider>
@@ -141,7 +146,7 @@ function App(): ReactElement {
           />
         </main>
       </WithFonts>
-    </>
+    </MetaOverrideProvider>
   )
 }
 
