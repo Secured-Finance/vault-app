@@ -8,26 +8,12 @@ type TMeta = {
   description: string
   og: string
   uri: string
-  preserveServerTitle?: boolean // Don't overwrite server-rendered title
 }
 
 export function Meta(meta: TMeta): ReactElement {
   useEffect(() => {
-    console.log('[Meta.tsx] useEffect triggered:', {
-      preserveServerTitle: meta.preserveServerTitle,
-      title: meta.title,
-      currentDocumentTitle: document.title,
-      willUpdate: !meta.preserveServerTitle
-    })
-
-    // Skip updating title if preserveServerTitle is true (for SSR pages like vault details)
-    if (!meta.preserveServerTitle) {
-      console.log('[Meta.tsx] Updating document.title to:', meta.title)
-      document.title = meta.title
-    } else {
-      console.log('[Meta.tsx] Preserving server-rendered title:', document.title)
-    }
-  }, [meta.title, meta.preserveServerTitle])
+    document.title = meta.title
+  }, [meta.title])
 
   return (
     <>

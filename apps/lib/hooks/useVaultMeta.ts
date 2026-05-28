@@ -31,14 +31,11 @@ export function useVaultMeta() {
     const baseUri = 'https://vault-api.secured.finance'
     const url = `${baseUri}/${chainId}/vaults/${address}`
 
-    console.log('[useVaultMeta] Fetching vault data from:', url)
-
     fetch(url, {
       headers: { Accept: 'application/json' }
     })
       .then((response) => {
         if (!response.ok) {
-          console.warn('[useVaultMeta] Failed to fetch vault data:', response.status)
           return null
         }
         return response.json()
@@ -51,11 +48,10 @@ export function useVaultMeta() {
         const vaultName = getVaultName(vaultData.name)
         const newTitle = `${vaultName} | SF Yield Vault | Secured Finance`
 
-        console.log('[useVaultMeta] Setting vault-specific title:', newTitle)
         document.title = newTitle
       })
-      .catch((error) => {
-        console.error('[useVaultMeta] Error fetching vault data:', error)
+      .catch(() => {
+        // Silently fail - keep default title
       })
   }, [asPath])
 }

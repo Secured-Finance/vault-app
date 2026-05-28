@@ -64,34 +64,21 @@ function App(): ReactElement {
   // Get most basic og and uri info
   let ogUrl = manifest.og || 'https://vaults.secured.finance/og.png'
   let pageUri = manifest.uri || 'https://vaults.secured.finance'
-  let isVaultDetailPage = false
 
   const ogBaseUrl = 'https://og.yearn.fi'
 
   if (asPath.split('/').length === 3) {
-    // Default to production
-
     // Use dynamic OG API for V3 vault pages: /[chainID]/[address]
     const [, chainID, address] = asPath.split('/')
     ogUrl = `${ogBaseUrl}/api/og/yearn/vault/${chainID}/${address}`
     pageUri = `https://vaults.secured.finance${asPath}`
-    isVaultDetailPage = true
-    console.log('[App.tsx] V3 Vault page detected:', { asPath, chainID, address, isVaultDetailPage })
   }
   if (asPath.startsWith('/vaults/') && asPath.split('/').length === 4) {
     // Use dynamic OG API for v2 vault pages: /vaults/[chainID]/[address]
     const [, , chainID, address] = asPath.split('/')
     ogUrl = `${ogBaseUrl}/api/og/yearn/vault/${chainID}/${address}`
     pageUri = `https://vaults.secured.finance${asPath}`
-    isVaultDetailPage = true
-    console.log('[App.tsx] V2 Vault page detected:', { asPath, chainID, address, isVaultDetailPage })
   }
-
-  console.log('[App.tsx] Meta props:', {
-    title: manifest.name,
-    preserveServerTitle: isVaultDetailPage,
-    pathname: asPath
-  })
 
   return (
     <>
@@ -102,7 +89,6 @@ function App(): ReactElement {
         themeColor={'#000000'}
         og={ogUrl}
         uri={pageUri}
-        preserveServerTitle={isVaultDetailPage}
       />
       <WithFonts>
         <main className={'font-aeonik size-full min-h-screen'}>
