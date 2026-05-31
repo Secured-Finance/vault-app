@@ -1,60 +1,40 @@
 import { RenderAmount } from '@lib/components/RenderAmount'
-import { useWallet } from '@lib/contexts/useWallet'
-import { useYearn } from '@lib/contexts/useYearn'
-import type { TNormalizedBN } from '@lib/types'
-import { cl, toNormalizedBN } from '@lib/utils'
+import { useYearnTokenPrice } from '@lib/hooks/useYearnTokenPrice'
+import { cl } from '@lib/utils'
 import type { TYDaemonVault } from '@lib/utils/schemas/yDaemonVaultsSchemas'
+import { useVaultUnderlyingBalance } from '@vaults-v3/hooks/useVaultUnderlyingBalance'
 import type { ReactElement } from 'react'
-import { useMemo } from 'react'
 
 export function VaultStakedAmount({ currentVault }: { currentVault: TYDaemonVault }): ReactElement {
-  const { getToken } = useWallet()
-  const { getPrice } = useYearn()
+  // Fetch underlying token balance using the reusable hook
+  const { underlyingBalance, hasBalance } = useVaultUnderlyingBalance(currentVault)
 
-  const { tokenPrice, staked, hasBalance } = useMemo(() => {
-    const vaultToken = getToken({ chainID: currentVault.chainID, address: currentVault.address })
-    const price = getPrice({ address: currentVault.address, chainID: currentVault.chainID })
-
-    let totalRawBalance = vaultToken.balance.raw
-    if (currentVault.staking.available) {
-      const stakingToken = getToken({ chainID: currentVault.chainID, address: currentVault.staking.address })
-      totalRawBalance += stakingToken.balance.raw
-    }
-
-    const total: TNormalizedBN = toNormalizedBN(totalRawBalance, vaultToken.decimals)
-    return {
-      tokenPrice: price,
-      staked: total,
-      hasBalance: total.raw > 0n
-    }
-  }, [
-    currentVault.address,
-    currentVault.chainID,
-    currentVault.staking.address,
-    currentVault.staking.available,
-    getToken,
-    getPrice
-  ])
+  // Use underlying token price instead of vault token price
+  const tokenPrice =
+    useYearnTokenPrice({
+      address: currentVault.token.address,
+      chainID: currentVault.chainID
+    }) || 0
 
   return (
     <div className={'flex flex-col pt-0 text-right'}>
       <p className={`yearn--table-data-section-item-value ${hasBalance ? 'text-neutral-900' : 'text-neutral-400'}`}>
         <RenderAmount
-          value={staked.normalized * tokenPrice.normalized}
+          value={underlyingBalance.normalized * tokenPrice}
           symbol={'USD'}
-          decimals={0}
+          decimals={2}
           options={{ shouldCompactValue: true, maximumFractionDigits: 2, minimumFractionDigits: 2 }}
         />
       </p>
       <small className={cl('text-xs text-neutral-900/40 flex flex-row', hasBalance ? 'visible' : 'invisible')}>
         <RenderAmount
           shouldFormatDust
-          value={staked.normalized}
+          value={underlyingBalance.normalized}
           symbol={currentVault.token.symbol}
           decimals={currentVault.token.decimals}
-          options={{ shouldDisplaySymbol: false, maximumFractionDigits: 4 }}
+          options={{ shouldDisplaySymbol: false, maximumFractionDigits: 2, minimumFractionDigits: 2 }}
         />
-        <p className="pl-1">{currentVault.symbol}</p>
+        <p className="pl-1">{currentVault.token.symbol}</p>
       </small>
     </div>
   )
