@@ -17,12 +17,14 @@ export function Meta(meta: TMeta): ReactElement {
 
   return (
     <>
+      <title>{meta.title}</title>
       <meta charSet="utf-8" />
       <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       <meta
         name="viewport"
         content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover"
       />
+      <meta name="description" content={meta.description} />
       <meta name="msapplication-TileColor" content={meta.titleColor} />
       <meta name="theme-color" content={meta.themeColor} />
       <meta name="application-name" content={meta.title} />
@@ -33,7 +35,7 @@ export function Meta(meta: TMeta): ReactElement {
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="msapplication-config" content="/favicons/browserconfig.xml" />
       <meta name="msapplication-tap-highlight" content="no" />
-      <meta name="googlebot" content="index,nofollow" />
+      <meta name="robots" content="index,follow" />
 
       {/* Twitter */}
       <meta property="twitter:image" content={meta.og} />
