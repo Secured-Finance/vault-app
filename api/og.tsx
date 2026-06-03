@@ -2,24 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { ImageResponse } from '@vercel/og'
 // biome-ignore lint/correctness/noUnusedImports: React is required for JSX
 import React from 'react'
-
-interface VaultData {
-  name: string
-  symbol: string
-  token: {
-    symbol: string
-  }
-  apr: {
-    netAPR: number
-    forwardAPR: {
-      netAPR: number
-    }
-  }
-  tvl: {
-    tvl: number
-  }
-  chainID: number
-}
+import { fetchVaultData } from './_utils'
 
 const Logo = () => (
   <svg width="400" height="41" viewBox="0 0 300 31" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -118,31 +101,6 @@ function getChainName(chainId: number): string {
     314: 'Filecoin'
   }
   return chains[chainId] || `Chain ${chainId}`
-}
-
-async function fetchVaultData(chainId: string, address: string): Promise<VaultData | null> {
-  const baseUri =
-    process.env.YDAEMON_BASE_URI || process.env.VITE_YDAEMON_BASE_URI || 'https://vault-api.secured.finance'
-  const url = `${baseUri}/${chainId}/vaults/${address}`
-
-  try {
-    const response = await fetch(url, {
-      headers: {
-        Accept: 'application/json'
-      }
-    })
-
-    if (!response.ok) {
-      console.error(`Failed to fetch vault data: ${response.status}`)
-      return null
-    }
-
-    const data = await response.json()
-    return data as VaultData
-  } catch (error) {
-    console.error('Error fetching vault data:', error)
-    return null
-  }
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

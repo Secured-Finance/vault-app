@@ -1,4 +1,5 @@
 import { ImageWithFallback } from '@lib/components/ImageWithFallback'
+import { useSetMetaOverride } from '@lib/contexts/useMetaOverride'
 import { useWallet } from '@lib/contexts/useWallet'
 import { useWeb3 } from '@lib/contexts/useWeb3'
 import type { TUseBalancesTokens } from '@lib/hooks/useBalances.multichains'
@@ -105,6 +106,13 @@ function Index(): ReactElement | null {
     currentVault?.staking.available,
     currentVault?.staking.address
   ])
+
+  useSetMetaOverride(
+    currentVault?.token?.symbol ? `${currentVault.token.symbol} Vault | SF Yield Vault | Secured Finance` : undefined,
+    currentVault?.token?.symbol
+      ? `${currentVault.token.symbol} Vault is designed to provide access to yield opportunities on ${currentVault.token.symbol} through on-chain strategies with a simple deposit experience.`
+      : undefined
+  )
 
   if (isLoadingVault || !params.address || !isInit || !yDaemonBaseUri) {
     return (
