@@ -10,45 +10,41 @@ type TMeta = {
   uri: string
 }
 
+function upsertMeta(attrKey: 'name' | 'property', attrVal: string, content: string): void {
+  const selector = `meta[${attrKey}="${attrVal}"]`
+  let el = document.head.querySelector(selector) as HTMLMetaElement | null
+  if (!el) {
+    el = document.createElement('meta')
+    el.setAttribute(attrKey, attrVal)
+    document.head.appendChild(el)
+  }
+  el.content = content
+}
+
 export function Meta(meta: TMeta): ReactElement {
   useEffect(() => {
     document.title = meta.title
-  }, [meta.title])
+
+    upsertMeta('name', 'description', meta.description)
+    upsertMeta('name', 'theme-color', meta.themeColor)
+    upsertMeta('name', 'msapplication-TileColor', meta.titleColor)
+    upsertMeta('name', 'application-name', meta.title)
+    upsertMeta('name', 'apple-mobile-web-app-title', meta.title)
+    upsertMeta('name', 'robots', 'index,follow')
+
+    upsertMeta('property', 'og:title', meta.title)
+    upsertMeta('property', 'og:description', meta.description)
+    upsertMeta('property', 'og:image', meta.og)
+    upsertMeta('property', 'og:url', meta.uri)
+
+    upsertMeta('property', 'twitter:title', meta.title)
+    upsertMeta('property', 'twitter:description', meta.description)
+    upsertMeta('property', 'twitter:image', meta.og)
+    upsertMeta('property', 'twitter:card', 'summary_large_image')
+  }, [meta.title, meta.description, meta.og, meta.uri, meta.titleColor, meta.themeColor])
 
   return (
     <>
-      <title>{meta.title}</title>
-      <meta charSet="utf-8" />
-      <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-      <meta
-        name="viewport"
-        content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover"
-      />
-      <meta name="description" content={meta.description} />
-      <meta name="msapplication-TileColor" content={meta.titleColor} />
-      <meta name="theme-color" content={meta.themeColor} />
-      <meta name="application-name" content={meta.title} />
-      <meta name="apple-mobile-web-app-title" content={meta.title} />
-      <meta name="apple-mobile-web-app-capable" content="yes" />
-      <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-      <meta name="format-detection" content="telephone=no" />
-      <meta name="mobile-web-app-capable" content="yes" />
-      <meta name="msapplication-config" content="/favicons/browserconfig.xml" />
-      <meta name="msapplication-tap-highlight" content="no" />
-      <meta name="robots" content="index,follow" />
-
-      {/* Twitter */}
-      <meta property="twitter:image" content={meta.og} />
-      <meta property="twitter:card" content="summary_large_image" />
-      <meta property="twitter:title" content={meta.title} />
-      <meta property="twitter:description" content={meta.description} />
-
-      {/* Open Graph */}
-      <meta property="og:image" content={meta.og} />
-      <meta property="og:url" content={meta.uri} />
-      <meta property="og:title" content={meta.title} />
-      <meta property="og:description" content={meta.description} />
-
       {/* Icons and Manifests */}
       <link rel="manifest" href="/manifest.json" />
       <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color={meta.themeColor} />
