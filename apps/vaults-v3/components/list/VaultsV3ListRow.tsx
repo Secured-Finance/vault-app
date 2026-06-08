@@ -1,5 +1,6 @@
 import { ImageWithFallback } from '@lib/components/ImageWithFallback'
 import { RenderAmount } from '@lib/components/RenderAmount'
+import { useYearnTokenPrice } from '@lib/hooks/useYearnTokenPrice'
 import { cl, isZero, toAddress, toNormalizedBN } from '@lib/utils'
 import type { TYDaemonVault } from '@lib/utils/schemas/yDaemonVaultsSchemas'
 import { VaultForwardAPY, VaultForwardAPYInlineDetails } from '@vaults-v3/components/table/VaultForwardAPY'
@@ -21,6 +22,13 @@ export function VaultsV3ListRow({
 }): ReactElement {
   const navigate = useNavigate()
   const availableToDeposit = useAvailableToDeposit(currentVault)
+  const tokenPrice =
+    useYearnTokenPrice({
+      address: currentVault.token.address,
+      chainID: currentVault.chainID
+    }) || 0
+  const availableNormalized = Number(toNormalizedBN(availableToDeposit, currentVault.token.decimals).normalized)
+  const availableUSD = availableNormalized * tokenPrice
   const href = `/${currentVault.chainID}/${toAddress(currentVault.address)}`
   const [isApyOpen, setIsApyOpen] = useState(false)
   const [isRiskOpen, setIsRiskOpen] = useState(false)
@@ -106,23 +114,33 @@ export function VaultsV3ListRow({
         </div>
         <div className={'yearn--table-data-section-item col-span-2 flex-row md:flex-col'} datatype={'number'}>
           <p className={'inline text-start text-xs text-neutral-800/60 md:hidden'}>{'Available'}</p>
-          <p
-            className={`yearn--table-data-section-item-value ${
-              isZero(availableToDeposit) ? 'text-neutral-400' : 'text-neutral-900'
-            }`}
-          >
-            <RenderAmount
-              value={Number(toNormalizedBN(availableToDeposit, currentVault.token.decimals).normalized)}
-              symbol={currentVault.token.symbol}
-              decimals={currentVault.token.decimals}
-              shouldFormatDust
-              options={{
-                shouldDisplaySymbol: false,
-                maximumFractionDigits:
-                  Number(toNormalizedBN(availableToDeposit, currentVault.token.decimals).normalized) > 1000 ? 2 : 4
-              }}
-            />
-          </p>
+          <div className={'flex flex-col pt-0 text-right'}>
+            <p
+              className={`yearn--table-data-section-item-value ${isZero(availableToDeposit) ? 'text-neutral-400' : 'text-neutral-900'}`}
+            >
+              <RenderAmount
+                value={availableUSD}
+                symbol={'USD'}
+                decimals={2}
+                options={{ shouldCompactValue: true, maximumFractionDigits: 2, minimumFractionDigits: 2 }}
+              />
+            </p>
+            <small
+              className={cl(
+                'text-xs text-neutral-900/40 flex flex-row',
+                isZero(availableToDeposit) ? 'invisible' : 'visible'
+              )}
+            >
+              <RenderAmount
+                value={availableNormalized}
+                symbol={currentVault.token.symbol}
+                decimals={currentVault.token.decimals}
+                shouldFormatDust
+                options={{ shouldDisplaySymbol: false, maximumFractionDigits: 2, minimumFractionDigits: 2 }}
+              />
+              <p className="pl-1">{currentVault.token.symbol}</p>
+            </small>
+          </div>
         </div>
         <div className={'yearn--table-data-section-item col-span-2 flex-row md:flex-col'} datatype={'number'}>
           <p className={'inline text-start text-xs text-neutral-800/60 md:hidden'}>{'Deposited'}</p>
@@ -179,6 +197,36 @@ export function VaultsV3ListRow({
         <div className={'yearn--table-data-section-item col-span-2 flex-row items-center'} datatype={'number'}>
           <p className={'inline text-start text-xs text-neutral-800/60'}>{'Historical APY'}</p>
           <VaultHistoricalAPY currentVault={currentVault} />
+        </div>
+        <div className={'yearn--table-data-section-item col-span-2 flex-row items-center'} datatype={'number'}>
+          <p className={'inline text-start text-xs text-neutral-800/60'}>{'Available'}</p>
+          <div className={'flex flex-col pt-0 text-right'}>
+            <p
+              className={`yearn--table-data-section-item-value ${isZero(availableToDeposit) ? 'text-neutral-400' : 'text-neutral-900'}`}
+            >
+              <RenderAmount
+                value={availableUSD}
+                symbol={'USD'}
+                decimals={2}
+                options={{ shouldCompactValue: true, maximumFractionDigits: 2, minimumFractionDigits: 2 }}
+              />
+            </p>
+            <small
+              className={cl(
+                'text-xs text-neutral-900/40 flex flex-row',
+                isZero(availableToDeposit) ? 'invisible' : 'visible'
+              )}
+            >
+              <RenderAmount
+                value={availableNormalized}
+                symbol={currentVault.token.symbol}
+                decimals={currentVault.token.decimals}
+                shouldFormatDust
+                options={{ shouldDisplaySymbol: false, maximumFractionDigits: 2, minimumFractionDigits: 2 }}
+              />
+              <p className="pl-1">{currentVault.token.symbol}</p>
+            </small>
+          </div>
         </div>
         {isHoldings ? (
           <div className={'yearn--table-data-section-item col-span-2 flex-row items-center'} datatype={'number'}>
