@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { readFileSync } from 'fs'
 import { join } from 'path'
+import { injectVaultMeta } from '../../apps/lib/utils/vaultMetaResponse'
 
 // Load HTML at module level (happens once per container cold start)
 const indexPath = join(process.cwd(), 'dist', 'index.html')
@@ -14,52 +15,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    let html = baseHtml
-
     // Get base URL from request headers
     const protocol = req.headers['x-forwarded-proto'] || 'https'
     const host = req.headers['x-forwarded-host'] || req.headers.host || 'vaults.secured.finance'
     const baseUrl = `${protocol}://${host}`
 
-    console.log('baseUrl:', baseUrl)
-
-    // Generate dynamic meta tags
-    const ogImageUrl = `${baseUrl}/api/og?chainId=${chainId}&address=${address}`
-    const canonicalUrl = `${baseUrl}/${chainId}/${address}`
-
-    const title = 'Secured Finance Vault'
-    const description = "Earn yield on your crypto with Secured Finance's automated vault strategies"
-
-    // Inject meta tags
-    const metaTags = `
-    <title>${title}</title>
-    <meta name="description" content="${description}" />
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="${title}" />
-    <meta property="og:description" content="${description}" />
-    <meta property="og:image" content="${ogImageUrl}" />
-    <meta property="og:url" content="${canonicalUrl}" />
-    <meta property="og:type" content="website" />
-    
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="${title}" />
-    <meta name="twitter:description" content="${description}" />
-    <meta name="twitter:image" content="${ogImageUrl}" />
-    
-    <!-- Additional SEO -->
-    <link rel="canonical" href="${canonicalUrl}" />
-    `
-
-    // Remove existing meta tags that we're replacing
-    html = html.replace(/<title>.*?<\/title>/gi, '')
-    html = html.replace(/<meta property="og:.*?".*?>/gi, '')
-    html = html.replace(/<meta name="twitter:.*?".*?>/gi, '')
-    html = html.replace(/<meta name="description".*?>/gi, '')
-
-    // Inject new meta tags
-    html = html.replace('</head>', `${metaTags}\n  </head>`)
+    const html = await injectVaultMeta(baseHtml, { chainId, address, baseUrl })
 
     res.setHeader('Content-Type', 'text/html')
     res.setHeader('Vercel-CDN-Cache-Control', 'public, s-maxage=86400, stale-while-revalidate=604800')
