@@ -1,7 +1,22 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { readFileSync } from 'fs'
 import { join } from 'path'
-import { injectVaultMeta } from '../../apps/lib/utils/vaultMetaResponse'
+
+// NOTE: This function is bundled by Vercel in isolation from the Vite app, so it
+// cannot import from apps/lib (doing so crashes the lambda at load with
+// ERR_MODULE_NOT_FOUND). The SEO strings below intentionally mirror
+// apps/lib/utils/seo.ts (the client source of truth) and must be kept in sync.
+const SITE_TITLE = 'SF Yield Vault: On-Chain Yield Strategy | Secured Finance'
+const SITE_DESCRIPTION =
+  "SF Yield Vault is Secured Finance's on-chain yield strategy product, designed to help users access yield opportunities through vaults with a simple deposit experience."
+
+function buildVaultTitle(symbol: string): string {
+  return `${symbol} Vault | SF Yield Vault | Secured Finance`
+}
+
+function buildVaultDescription(symbol: string): string {
+  return `${symbol} Vault is designed to provide access to yield opportunities on ${symbol} through on-chain strategies with a simple deposit experience.`
+}
 
 // Minimal shell used only if the built index.html can't be located at runtime,
 // so the function still returns valid HTML with the correct meta tags instead
@@ -30,6 +45,62 @@ function getBaseHtml(): string {
   return cachedHtml
 }
 
+async function fetchVaultSymbol(chainId: string, address: string): Promise<string | null> {
+  const baseUri =
+    process.env.YDAEMON_BASE_URI || process.env.VITE_YDAEMON_BASE_URI || 'https://vault-api.secured.finance'
+
+  try {
+    const response = await fetch(`${baseUri}/${chainId}/vaults/${address}`, {
+      headers: { Accept: 'application/json' }
+    })
+    if (!response.ok) {
+      console.error(`Failed to fetch vault data: ${response.status}`)
+      return null
+    }
+    const data = (await response.json()) as { token?: { symbol?: string } }
+    return data?.token?.symbol || null
+  } catch (error) {
+    console.error('Error fetching vault data:', error)
+    return null
+  }
+}
+
+function injectMeta(
+  html: string,
+  title: string,
+  description: string,
+  ogImageUrl: string,
+  canonicalUrl: string
+): string {
+  const metaTags = `
+    <title>${title}</title>
+    <meta name="description" content="${description}" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="${title}" />
+    <meta property="og:description" content="${description}" />
+    <meta property="og:image" content="${ogImageUrl}" />
+    <meta property="og:url" content="${canonicalUrl}" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${title}" />
+    <meta name="twitter:description" content="${description}" />
+    <meta name="twitter:image" content="${ogImageUrl}" />
+
+    <!-- Additional SEO -->
+    <link rel="canonical" href="${canonicalUrl}" />
+  `
+
+  return html
+    .replace(/<title>.*?<\/title>/gi, '')
+    .replace(/<meta property="og:.*?".*?>/gi, '')
+    .replace(/<meta name="twitter:.*?".*?>/gi, '')
+    .replace(/<meta name="description".*?>/gi, '')
+    .replace('</head>', `${metaTags}\n  </head>`)
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { chainId, address } = req.query
 
@@ -47,7 +118,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const baseHtml = getBaseHtml()
   try {
-    const html = await injectVaultMeta(baseHtml, { chainId, address, baseUrl })
+    const ogImageUrl = `${baseUrl}/api/og?chainId=${chainId}&address=${address}`
+    const canonicalUrl = `${baseUrl}/${chainId}/${address}`
+
+    const symbol = await fetchVaultSymbol(chainId, address)
+    const title = symbol ? buildVaultTitle(symbol) : SITE_TITLE
+    const description = symbol ? buildVaultDescription(symbol) : SITE_DESCRIPTION
+
+    const html = injectMeta(baseHtml, title, description, ogImageUrl, canonicalUrl)
     return res.status(200).send(html)
   } catch (error) {
     console.error('Error generating meta tags:', error)
