@@ -112,7 +112,7 @@ function PortfolioCard(): ReactElement {
       </strong>
       <div className={'flex flex-col gap-4 md:flex-row md:gap-32'}>
         <div>
-          <p className={'pb-0 text-[#757CA6] md:pb-2'}>{'Deposited'}</p>
+          <p className={'pb-0 text-[#757CA6] md:pb-2'}>{'Holdings'}</p>
           {isLoading ? (
             <div className={'h-[36.5px] w-32 animate-pulse rounded-sm bg-[#757CA6]'} />
           ) : (

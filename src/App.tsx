@@ -2,6 +2,7 @@ import AppHeader from '@lib/components/Header'
 import { Meta } from '@lib/components/Meta'
 import { WithFonts } from '@lib/components/WithFonts'
 import { IndexedDB } from '@lib/contexts/useIndexedDB'
+import { MetaProvider } from '@lib/contexts/useMeta'
 import { WithNotifications } from '@lib/contexts/useNotifications'
 import { WithNotificationsActions } from '@lib/contexts/useNotificationsActions'
 import { WalletContextApp } from '@lib/contexts/useWallet'
@@ -13,6 +14,7 @@ import { IconAlertError } from '@lib/icons/IconAlertError'
 import { IconCheckmark } from '@lib/icons/IconCheckmark'
 import { cl } from '@lib/utils'
 import { SUPPORTED_NETWORKS } from '@lib/utils/constants'
+import { SITE_DESCRIPTION, SITE_TITLE } from '@lib/utils/seo'
 import { AppSettingsContextApp } from '@vaults-v2/contexts/useAppSettings'
 import type { ReactElement } from 'react'
 import { Toaster } from 'react-hot-toast'
@@ -83,10 +85,10 @@ function App(): ReactElement {
   }
 
   return (
-    <>
+    <MetaProvider>
       <Meta
-        title={manifest.name || 'Secured Finance'}
-        description={manifest.description || 'The yield protocol for digital assets'}
+        title={manifest.name || SITE_TITLE}
+        description={manifest.description || SITE_DESCRIPTION}
         titleColor={'#ffffff'}
         themeColor={'#000000'}
         og={ogUrl}
@@ -141,7 +143,7 @@ function App(): ReactElement {
           />
         </main>
       </WithFonts>
-    </>
+    </MetaProvider>
   )
 }
 

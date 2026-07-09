@@ -1,4 +1,5 @@
 import { ImageWithFallback } from '@lib/components/ImageWithFallback'
+import { useMetaOverride } from '@lib/contexts/useMeta'
 import { useWallet } from '@lib/contexts/useWallet'
 import { useWeb3 } from '@lib/contexts/useWeb3'
 import type { TUseBalancesTokens } from '@lib/hooks/useBalances.multichains'
@@ -7,6 +8,7 @@ import { useYDaemonBaseURI } from '@lib/hooks/useYDaemonBaseURI'
 import { cl, toAddress } from '@lib/utils'
 import type { TYDaemonVault } from '@lib/utils/schemas/yDaemonVaultsSchemas'
 import { yDaemonVaultSchema } from '@lib/utils/schemas/yDaemonVaultsSchemas'
+import { buildVaultDescription, buildVaultTitle } from '@lib/utils/seo'
 import { ActionFlowContextApp } from '@vaults-v2/contexts/useActionFlow'
 import { WithSolverContextApp } from '@vaults-v2/contexts/useSolver'
 import { VaultActionsTabsWrapper } from '@vaults-v3/components/details/VaultActionsTabsWrapper'
@@ -22,6 +24,7 @@ function Index(): ReactElement | null {
   const { address, isActive } = useWeb3()
   const params = useParams()
   const { onRefresh } = useWallet()
+  const { setOverride } = useMetaOverride()
   const { yDaemonBaseUri } = useYDaemonBaseURI({
     chainID: Number(params.chainID)
   })
@@ -102,6 +105,18 @@ function Index(): ReactElement | null {
       setIsInit(true)
     }
   }, [vault, _currentVault])
+
+  // Publish per-vault SEO title/description once the vault (and its token symbol) is known.
+  useEffect((): (() => void) => {
+    const symbol = currentVault?.token?.symbol
+    if (symbol) {
+      setOverride({
+        title: buildVaultTitle(symbol),
+        description: buildVaultDescription(symbol)
+      })
+    }
+    return () => setOverride({})
+  }, [currentVault?.token?.symbol, setOverride])
 
   useEffect((): void => {
     if (address && isActive) {
