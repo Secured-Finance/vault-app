@@ -10,6 +10,15 @@ const SITE_TITLE = 'SF Yield Vault: On-Chain Yield Strategy | Secured Finance'
 const SITE_DESCRIPTION =
   "SF Yield Vault is Secured Finance's on-chain yield strategy product, designed to help users access yield opportunities through vaults with a simple deposit experience."
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
 function buildVaultTitle(symbol: string): string {
   return `${symbol} Vault | SF Yield Vault | Secured Finance`
 }
@@ -45,7 +54,14 @@ function getBaseHtml(): string {
   return cachedHtml
 }
 
+const CHAIN_ID_PATTERN = /^[0-9]{1,10}$/
+const ADDRESS_PATTERN = /^0x[a-fA-F0-9]{40}$/
+
 async function fetchVaultSymbol(chainId: string, address: string): Promise<string | null> {
+  if (!CHAIN_ID_PATTERN.test(chainId) || !ADDRESS_PATTERN.test(address)) {
+    return null
+  }
+
   const baseUri =
     process.env.YDAEMON_BASE_URI || process.env.VITE_YDAEMON_BASE_URI || 'https://vault-api.secured.finance'
 
@@ -72,25 +88,30 @@ function injectMeta(
   ogImageUrl: string,
   canonicalUrl: string
 ): string {
+  const safeTitle = escapeHtml(title)
+  const safeDescription = escapeHtml(description)
+  const safeOgImageUrl = escapeHtml(ogImageUrl)
+  const safeCanonicalUrl = escapeHtml(canonicalUrl)
+
   const metaTags = `
-    <title>${title}</title>
-    <meta name="description" content="${description}" />
+    <title>${safeTitle}</title>
+    <meta name="description" content="${safeDescription}" />
 
     <!-- Open Graph -->
-    <meta property="og:title" content="${title}" />
-    <meta property="og:description" content="${description}" />
-    <meta property="og:image" content="${ogImageUrl}" />
-    <meta property="og:url" content="${canonicalUrl}" />
+    <meta property="og:title" content="${safeTitle}" />
+    <meta property="og:description" content="${safeDescription}" />
+    <meta property="og:image" content="${safeOgImageUrl}" />
+    <meta property="og:url" content="${safeCanonicalUrl}" />
     <meta property="og:type" content="website" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="${title}" />
-    <meta name="twitter:description" content="${description}" />
-    <meta name="twitter:image" content="${ogImageUrl}" />
+    <meta name="twitter:title" content="${safeTitle}" />
+    <meta name="twitter:description" content="${safeDescription}" />
+    <meta name="twitter:image" content="${safeOgImageUrl}" />
 
     <!-- Additional SEO -->
-    <link rel="canonical" href="${canonicalUrl}" />
+    <link rel="canonical" href="${safeCanonicalUrl}" />
   `
 
   return html
@@ -104,7 +125,14 @@ function injectMeta(
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { chainId, address } = req.query
 
-  if (!chainId || !address || typeof chainId !== 'string' || typeof address !== 'string') {
+  if (
+    !chainId ||
+    !address ||
+    typeof chainId !== 'string' ||
+    typeof address !== 'string' ||
+    !CHAIN_ID_PATTERN.test(chainId) ||
+    !ADDRESS_PATTERN.test(address)
+  ) {
     return res.status(400).json({ error: 'Missing or invalid chainId or address' })
   }
 

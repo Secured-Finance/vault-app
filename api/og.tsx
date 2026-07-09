@@ -120,7 +120,14 @@ function getChainName(chainId: number): string {
   return chains[chainId] || `Chain ${chainId}`
 }
 
+const CHAIN_ID_PATTERN = /^[0-9]{1,10}$/
+const ADDRESS_PATTERN = /^0x[a-fA-F0-9]{40}$/
+
 async function fetchVaultData(chainId: string, address: string): Promise<VaultData | null> {
+  if (!CHAIN_ID_PATTERN.test(chainId) || !ADDRESS_PATTERN.test(address)) {
+    return null
+  }
+
   const baseUri =
     process.env.YDAEMON_BASE_URI || process.env.VITE_YDAEMON_BASE_URI || 'https://vault-api.secured.finance'
   const url = `${baseUri}/${chainId}/vaults/${address}`
@@ -149,7 +156,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const { chainId, address } = req.query
 
-    if (typeof chainId !== 'string' || typeof address !== 'string' || !chainId || !address) {
+    if (
+      typeof chainId !== 'string' ||
+      typeof address !== 'string' ||
+      !chainId ||
+      !address ||
+      !CHAIN_ID_PATTERN.test(chainId) ||
+      !ADDRESS_PATTERN.test(address)
+    ) {
       return res.status(400).json({ error: 'Invalid parameters' })
     }
 
