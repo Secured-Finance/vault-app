@@ -49,7 +49,7 @@ function HeaderUserPosition(): ReactElement {
   }
   return (
     <div className={'col-span-12 w-full md:col-span-8'}>
-      <p className={'pb-2 text-lg text-neutral-900 md:pb-6 md:text-3xl'}>{'Deposited'}</p>
+      <p className={'pb-2 text-lg text-neutral-900 md:pb-6 md:text-3xl'}>{'Holdings'}</p>
       <b className={'font-number text-4xl text-neutral-900 md:text-7xl'}>
         {'$'}
         <Counter value={Number(cumulatedValueInV2Vaults)} decimals={2} />
