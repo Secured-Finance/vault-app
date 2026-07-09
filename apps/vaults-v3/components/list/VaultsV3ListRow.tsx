@@ -143,7 +143,7 @@ export function VaultsV3ListRow({
           </div>
         </div>
         <div className={'yearn--table-data-section-item col-span-2 flex-row md:flex-col'} datatype={'number'}>
-          <p className={'inline text-start text-xs text-neutral-800/60 md:hidden'}>{'Deposited'}</p>
+          <p className={'inline text-start text-xs text-neutral-800/60 md:hidden'}>{'Holdings'}</p>
           <VaultStakedAmount currentVault={currentVault} />
         </div>
         <div className={'yearn--table-data-section-item col-span-2 flex-row md:flex-col'} datatype={'number'}>
@@ -230,7 +230,7 @@ export function VaultsV3ListRow({
         </div>
         {isHoldings ? (
           <div className={'yearn--table-data-section-item col-span-2 flex-row items-center'} datatype={'number'}>
-            <p className={'inline text-start text-xs text-neutral-800/60'}>{'Deposited'}</p>
+            <p className={'inline text-start text-xs text-neutral-800/60'}>{'Holdings'}</p>
             <VaultStakedAmount currentVault={currentVault} />
           </div>
         ) : null}

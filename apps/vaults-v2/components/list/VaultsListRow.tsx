@@ -451,7 +451,7 @@ export function VaultsListRow({ currentVault }: { currentVault: TYDaemonVault })
           </div>
 
           <div className={'yearn--table-data-section-item col-span-2 flex-row md:flex-col'} datatype={'number'}>
-            <p className={'yearn--table-data-section-item-label font-aeonik!'}>{'Deposited'}</p>
+            <p className={'yearn--table-data-section-item-label font-aeonik!'}>{'Holdings'}</p>
             <VaultStakedAmount currentVault={currentVault} />
           </div>
 
