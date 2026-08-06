@@ -62,8 +62,6 @@ export function Meta(props: TMeta): ReactElement {
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="msapplication-config" content="/favicons/browserconfig.xml" />
       <meta name="msapplication-tap-highlight" content="no" />
-      <meta name="googlebot" content="index,nofollow" />
-
       {/* Icons and Manifests */}
       <link rel="manifest" href="/manifest.json" />
       <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color={props.themeColor} />
