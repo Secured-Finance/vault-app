@@ -39,11 +39,11 @@ function BrandNewVaultCard(): ReactElement {
             'whitespace-break-spaces uppercase'
           )}
         >
-          {'A brave new\nworld for Yield'}
+          {'Automated On-Chain Yield Vaults'}
         </h1>
         <p className={'mb-4 whitespace-break-spaces text-base text-neutral-900 md:text-lg'}>
           {
-            'Secured Finance Vaults is a new yield paradigm offering better automation, composability and flexibility. Enjoy!'
+            'Deposit supported stablecoins into transparent, rule-based strategies designed to access on-chain yield—without managing an order book yourself. Receive a vault share token and track strategy allocations, performance, and fees on-chain.'
           }
         </p>
       </div>
@@ -79,7 +79,7 @@ function PortfolioCard(): ReactElement {
         <div className={'flex'}>
           <div>
             <p className={'pb-0 text-[#757CA6] md:pb-2'}>
-              {'Looks like you need to connect your wallet. And call your mum. Always important.'}
+              {'Connect your wallet to view your vault positions and holdings.'}
             </p>
             <button
               className={cl('rounded-lg overflow-hidden flex', 'px-[42px] py-2 mt-16', 'relative group', 'border-none')}
