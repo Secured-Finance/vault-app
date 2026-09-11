@@ -9,6 +9,7 @@ import type { TNormalizedBN } from '@lib/types'
 import type { TNotificationType } from '@lib/types/notifications'
 import { isZero, toAddress, toBigInt, zeroNormalizedBN } from '@lib/utils'
 import { ETH_TOKEN_ADDRESS } from '@lib/utils/constants'
+import { isVaultAffectedByIncident } from '@lib/utils/incident'
 import { PLAUSIBLE_EVENTS } from '@lib/utils/plausible'
 import type { TYDaemonVault } from '@lib/utils/schemas/yDaemonVaultsSchemas'
 import { defaultTxStatus } from '@lib/utils/wagmi'
@@ -235,6 +236,7 @@ export function VaultDetailsQuickActionsButtons({
    ** or if the expected out is zero.
    *********************************************************************************************/
   const isButtonDisabled =
+    isVaultAffectedByIncident(currentVault) ||
     (!address && !provider) ||
     isZero(toBigInt(actionParams.amount?.raw)) ||
     (isDepositing &&
