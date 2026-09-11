@@ -24,7 +24,6 @@ export const isIncidentActive = (): boolean => Boolean(getIncidentAlertMessage()
 const getAffectedStrategyName = (): string => import.meta.env.VITE_INCIDENT_AFFECTED_STRATEGY_NAME || 'SF Lending'
 
 export const isVaultAffectedByIncident = (vault: TYDaemonVault | undefined | null): boolean => {
-  console.log('isVaultAffectedByIncident', vault, isIncidentActive(), getAffectedStrategyName())
   if (!vault || !isIncidentActive()) {
     return false
   }

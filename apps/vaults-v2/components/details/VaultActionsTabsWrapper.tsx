@@ -225,10 +225,10 @@ export function VaultActionsTabsWrapper({ currentVault }: { currentVault: TYDaem
       {isVaultAffectedByIncident(currentVault) && (
         <div aria-label={'Incident Warning'} className={'col-span-12 mt-10'}>
           <div className={'w-full rounded-3xl bg-neutral-900 p-6 text-neutral-0'}>
-            <b className={'text-lg'}>{'Deposits and withdrawals are temporarily restricted.'}</b>
+            <b className={'text-lg'}>{'New deposits and withdrawals are temporarily disabled in the interface.'}</b>
             <p className={'mt-2'}>
               {
-                'This is an interface restriction, not an on-chain pause — direct contract deposits may still be possible. New funds cannot currently be deployed via this UI, and withdrawals for this vault are unavailable while we resolve an incident with the SF Lending strategy.'
+                'New funds cannot currently be deployed, and funds deployed to the underlying lending protocol cannot currently be withdrawn. We apologize for the inconvenience.'
               }
             </p>
             <a

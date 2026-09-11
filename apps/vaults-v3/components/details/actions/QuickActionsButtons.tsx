@@ -1,6 +1,5 @@
 import { usePlausible } from '@hooks/usePlausible'
 import { Button } from '@lib/components/Button'
-import { Tooltip } from '@lib/components/Tooltip'
 import { useNotificationsActions } from '@lib/contexts/useNotificationsActions'
 import { useWallet } from '@lib/contexts/useWallet'
 import { useWeb3 } from '@lib/contexts/useWeb3'
@@ -237,6 +236,7 @@ export function VaultDetailsQuickActionsButtons({
    ** or if the expected out is zero.
    *********************************************************************************************/
   const isButtonDisabled =
+    isVaultAffectedByIncident(currentVault) ||
     (!address && !provider) ||
     isZero(toBigInt(actionParams.amount?.raw)) ||
     (isDepositing &&
@@ -250,26 +250,6 @@ export function VaultDetailsQuickActionsButtons({
    ** button to migrate.
    *********************************************************************************************/
   const isAboveAllowance = toBigInt(actionParams.amount?.raw) > toBigInt(allowanceFrom?.raw)
-
-  /**********************************************************************************************
-   ** For a vault affected by the current incident, every action funnels through this component
-   ** (Approve, Deposit, Deposit and Stake, Zap via Cowswap/Portals, Migrate, Withdraw), so this
-   ** is the single choke point to disable them. This is an interface-level restriction, not an
-   ** on-chain pause: the vault contracts themselves are untouched.
-   *********************************************************************************************/
-  if (isVaultAffectedByIncident(currentVault)) {
-    const label = isDepositing ? 'Deposit unavailable' : 'Withdrawal unavailable'
-    const explanation = isDepositing
-      ? 'New deposits are temporarily disabled at the interface level while an SF Lending incident is resolved. This is not an on-chain pause — direct contract deposits may still be possible.'
-      : 'Withdrawals for this vault are temporarily unavailable at the interface level while an SF Lending incident is resolved.'
-    return (
-      <Tooltip tooltip={explanation}>
-        <Button variant="v3" className={'w-full'} isDisabled>
-          {label}
-        </Button>
-      </Tooltip>
-    )
-  }
 
   if (
     currentVault.version.startsWith('3') &&
