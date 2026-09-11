@@ -2,6 +2,7 @@ import { ImageWithFallback } from '@lib/components/ImageWithFallback'
 import type { TNormalizedBN } from '@lib/types'
 import { formatAmount, formatPercent, toAddress } from '@lib/utils'
 import { replaceStrings } from '@lib/utils/helpers'
+import { isVaultAffectedByIncident } from '@lib/utils/incident'
 import type { TYDaemonVault } from '@lib/utils/schemas/yDaemonVaultsSchemas'
 import { VAULT_NAME_REPLACEMENTS } from '@vaults/constants'
 import type { FC } from 'react'
@@ -16,6 +17,7 @@ export const VaultPositionCard: FC<{
 
   const title = replaceStrings(vault.name, VAULT_NAME_REPLACEMENTS, '')
   const apr = vault.apr?.forwardAPR?.netAPR || 0
+  const isAffectedByIncident = isVaultAffectedByIncident(vault)
   const isV3 = vault.version.startsWith('3') || vault.version.startsWith('~3')
   const href = isV3
     ? `/${vault.chainID}/${toAddress(vault.address)}`
@@ -45,9 +47,19 @@ export const VaultPositionCard: FC<{
             </div>
             <div className={'h-px w-full bg-white/10'} />
             <div className={'flex w-full flex-row items-center justify-between gap-4'}>
-              <p className={'text-[14px] font-medium text-neutral-900'}>
+              <p
+                className={'text-[14px] font-medium text-neutral-900'}
+                title={
+                  isAffectedByIncident
+                    ? 'Estimated value — withdrawals for this vault are temporarily unavailable while an SF Lending incident is resolved.'
+                    : undefined
+                }
+              >
                 <span className={'text-neutral-400 dark:text-neutral-900/50'}>{'$'}</span>
                 {formatAmount(vault.totalValue)}
+                {isAffectedByIncident && (
+                  <span className={'text-neutral-400 dark:text-neutral-900/50'}>{' (Est.)'}</span>
+                )}
               </p>
               {apr > 0 && (
                 <p className={'text-[14px] text-neutral-400 dark:text-neutral-900/50'}>

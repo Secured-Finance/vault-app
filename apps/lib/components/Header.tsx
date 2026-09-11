@@ -4,6 +4,12 @@ import { IconBell } from '@lib/icons/IconBell'
 import { IconBurgerPlain } from '@lib/icons/IconBurgerPlain'
 import { IconWallet } from '@lib/icons/IconWallet'
 import { cl } from '@lib/utils'
+import {
+  getIncidentAlertLink,
+  getIncidentAlertLinkLabel,
+  getIncidentAlertMessage,
+  isIncidentActive
+} from '@lib/utils/incident'
 import { truncateHex } from '@lib/utils/tools.address'
 import { useAccountModal, useChainModal } from '@rainbow-me/rainbowkit'
 import type { ReactElement } from 'react'
@@ -36,6 +42,29 @@ function Navbar({ nav, currentPathName }: TNavbar): ReactElement {
         )
       )}
     </nav>
+  )
+}
+
+function IncidentAlert(): ReactElement | null {
+  if (!isIncidentActive()) {
+    return null
+  }
+
+  const message = getIncidentAlertMessage()
+  const link = getIncidentAlertLink()
+
+  return (
+    <div role={'alert'} className={'w-full bg-red p-2 text-center text-xs text-white'} data-testid={'incident-alert'}>
+      {message}
+      {link && (
+        <>
+          {' '}
+          <Link href={link} target={'_blank'} className={'underline'}>
+            {getIncidentAlertLinkLabel()}
+          </Link>
+        </>
+      )}
+    </div>
   )
 }
 
@@ -125,6 +154,7 @@ function AppHeader(props: { supportedNetworks: Chain[] }): ReactElement {
 
   return (
     <div id={'head'} className={'inset-x-0 top-0 z-50 w-full'}>
+      <IncidentAlert />
       <div className={'w-full'}>
         <header className={'yearn--header mx-auto max-w-[1232px] px-0!'}>
           <div className={'direction-row flex items-center justify-start gap-x-6 px-1 py-2 md:py-1'}>

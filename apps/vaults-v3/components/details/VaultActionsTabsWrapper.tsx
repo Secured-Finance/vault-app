@@ -4,6 +4,7 @@ import { useYearn } from '@lib/contexts/useYearn'
 import type { TNormalizedBN } from '@lib/types'
 import { cl, formatAmount, parseMarkdown, toAddress, toBigInt, toNormalizedValue } from '@lib/utils'
 import { DISABLED_VEYFI_GAUGES_VAULTS_LIST, VEYFI_ADDRESS } from '@lib/utils/constants'
+import { getIncidentAlertLink, isVaultAffectedByIncident } from '@lib/utils/incident'
 import type { TYDaemonVault } from '@lib/utils/schemas/yDaemonVaultsSchemas'
 import { useUpdateEffect } from '@react-hookz/web'
 import { Flow, useActionFlow } from '@vaults-v2/contexts/useActionFlow'
@@ -565,6 +566,27 @@ function VaultActionsTabsWrapperComponent({ currentVault }: { currentVault: TYDa
                 {'https://katana.yearn.space'}
               </a>
             </div>
+          </div>
+        </div>
+      )}
+
+      {isVaultAffectedByIncident(currentVault) && (
+        <div aria-label={'Incident Warning'} className={'col-span-12 mt-10'}>
+          <div className={'w-full rounded-3xl bg-neutral-900 p-6 text-neutral-0'}>
+            <b className={'text-lg'}>{'Deposits and withdrawals are temporarily restricted.'}</b>
+            <p className={'mt-2'}>
+              {
+                'This is an interface restriction, not an on-chain pause — direct contract deposits may still be possible. New funds cannot currently be deployed via this UI, and withdrawals for this vault are unavailable while we resolve an incident with the SF Lending strategy.'
+              }
+            </p>
+            <a
+              className={'mt-2 inline-block underline'}
+              href={getIncidentAlertLink()}
+              target={'_blank'}
+              rel={'noopener noreferrer'}
+            >
+              {'See the incident update'}
+            </a>
           </div>
         </div>
       )}

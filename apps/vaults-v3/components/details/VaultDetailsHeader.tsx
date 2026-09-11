@@ -23,6 +23,7 @@ import {
   zeroNormalizedBN
 } from '@lib/utils'
 import { copyToClipboard, getVaultName } from '@lib/utils/helpers'
+import { isVaultAffectedByIncident } from '@lib/utils/incident'
 import type { TYDaemonVault } from '@lib/utils/schemas/yDaemonVaultsSchemas'
 import { retrieveConfig } from '@lib/utils/wagmi'
 import { getNetwork } from '@lib/utils/wagmi/utils'
@@ -236,9 +237,11 @@ function ValueInVaultAsToken(props: {
   vaultPrice: number
   valueInToken: TNormalizedBN
 }): ReactElement {
+  const isAffectedByIncident = isVaultAffectedByIncident(props.currentVault)
+
   return (
     <VaultHeaderLineItem
-      label={'Your Holdings'}
+      label={isAffectedByIncident ? 'Your Holdings (Est.)' : 'Your Holdings'}
       legend={
         <span>
           <Counter
@@ -270,7 +273,9 @@ function ValueInVaultAsToken(props: {
             }
           >
             <p className={'flex w-full flex-row justify-between text-neutral-700 md:text-xs'}>
-              {'Your yield is accruing every single block. Go you!'}
+              {isAffectedByIncident
+                ? 'This is an estimated position value. Withdrawals for this vault are temporarily unavailable while an SF Lending incident is resolved.'
+                : 'Your yield is accruing every single block. Go you!'}
             </p>
           </div>
         </span>
