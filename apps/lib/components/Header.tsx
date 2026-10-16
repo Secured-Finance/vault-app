@@ -2,6 +2,7 @@ import { useNotifications } from '@lib/contexts/useNotifications'
 import { useWeb3 } from '@lib/contexts/useWeb3'
 import { IconBell } from '@lib/icons/IconBell'
 import { IconBurgerPlain } from '@lib/icons/IconBurgerPlain'
+import { IconCheckmark } from '@lib/icons/IconCheckmark'
 import { IconWallet } from '@lib/icons/IconWallet'
 import { cl } from '@lib/utils'
 import {
@@ -10,6 +11,12 @@ import {
   getIncidentAlertMessage,
   isIncidentActive
 } from '@lib/utils/incident'
+import {
+  getReopeningAlertLink,
+  getReopeningAlertLinkLabel,
+  getReopeningAlertMessage,
+  isReopeningActive
+} from '@lib/utils/reopening'
 import { truncateHex } from '@lib/utils/tools.address'
 import { useAccountModal, useChainModal } from '@rainbow-me/rainbowkit'
 import type { ReactElement } from 'react'
@@ -64,6 +71,36 @@ function IncidentAlert(): ReactElement | null {
           </Link>
         </>
       )}
+    </div>
+  )
+}
+
+function ReopeningAlert(): ReactElement | null {
+  if (!isReopeningActive()) {
+    return null
+  }
+
+  const message = getReopeningAlertMessage()
+  const link = getReopeningAlertLink()
+
+  return (
+    <div
+      role={'alert'}
+      className={'flex w-full items-center justify-center gap-1 bg-[#00796D] p-2 text-center text-xs text-white'}
+      data-testid={'reopening-alert'}
+    >
+      <IconCheckmark className={'size-3 shrink-0'} />
+      <span>
+        {message}
+        {link && (
+          <>
+            {' '}
+            <Link href={link} target={'_blank'} className={'underline'}>
+              {getReopeningAlertLinkLabel()}
+            </Link>
+          </>
+        )}
+      </span>
     </div>
   )
 }
@@ -155,6 +192,7 @@ function AppHeader(props: { supportedNetworks: Chain[] }): ReactElement {
   return (
     <div id={'head'} className={'inset-x-0 top-0 z-50 w-full'}>
       <IncidentAlert />
+      <ReopeningAlert />
       <div className={'w-full'}>
         <header className={'yearn--header mx-auto max-w-[1232px] px-0!'}>
           <div className={'direction-row flex items-center justify-start gap-x-6 px-1 py-2 md:py-1'}>
