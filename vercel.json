@@ -1,6 +1,6 @@
 {
   "installCommand": "bun install --frozen-lockfile",
-  "buildCommand": "bun run build",
+  "buildCommand": "node -v && bun run build",
   "outputDirectory": "dist",
   "functions": {
     "api/og.tsx": {
