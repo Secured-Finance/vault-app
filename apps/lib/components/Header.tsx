@@ -9,7 +9,9 @@ import {
   getIncidentAlertLink,
   getIncidentAlertLinkLabel,
   getIncidentAlertMessage,
-  isIncidentActive
+  getPauseAlertMessage,
+  isIncidentActive,
+  isPauseActive
 } from '@lib/utils/incident'
 import {
   getReopeningAlertLink,
@@ -49,6 +51,37 @@ function Navbar({ nav, currentPathName }: TNavbar): ReactElement {
         )
       )}
     </nav>
+  )
+}
+
+export function PauseAlert(): ReactElement | null {
+  if (!isPauseActive()) {
+    return null
+  }
+
+  return (
+    <div
+      role={'alert'}
+      className={'flex w-full items-center justify-center gap-1 bg-amber-600 p-2 text-center text-xs text-white'}
+      data-testid={'pause-alert'}
+    >
+      <svg
+        className={'size-3 shrink-0'}
+        xmlns={'http://www.w3.org/2000/svg'}
+        viewBox={'0 0 24 24'}
+        fill={'none'}
+        stroke={'currentcolor'}
+        strokeWidth={2}
+        strokeLinecap={'round'}
+        strokeLinejoin={'round'}
+        aria-hidden={'true'}
+      >
+        <path
+          d={'M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z'}
+        />
+      </svg>
+      <span>{getPauseAlertMessage()}</span>
+    </div>
   )
 }
 
@@ -191,6 +224,7 @@ function AppHeader(props: { supportedNetworks: Chain[] }): ReactElement {
 
   return (
     <div id={'head'} className={'inset-x-0 top-0 z-50 w-full'}>
+      <PauseAlert />
       <IncidentAlert />
       <ReopeningAlert />
       <div className={'w-full'}>
