@@ -16,6 +16,13 @@ export const getIncidentAlertLinkLabel = (): string =>
 export const isIncidentActive = (): boolean => Boolean(getIncidentAlertMessage())
 
 /**********************************************************************************************
+ ** Protocol-paused notice, same env-driven toggle. Notice only: no actions are disabled.
+ *********************************************************************************************/
+export const getPauseAlertMessage = (): string => import.meta.env.VITE_PAUSE_ALERT_MESSAGE || ''
+
+export const isPauseActive = (): boolean => Boolean(getPauseAlertMessage())
+
+/**********************************************************************************************
  ** yDaemon does not expose a "paused" flag on a vault's strategies, so the affected strategy is
  ** matched by name. This is intentionally per-vault (not a single global switch) so the
  ** restriction self-resolves for a given vault the moment its strategy no longer matches,
